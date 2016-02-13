@@ -50,23 +50,35 @@ class eventHandler:
             m_.f1KeyDown()
 
     def leftKeyDown(m_):
-        if m_.activePlayer.position.y == 0 and m_.env.notPaused:
+        initialSpeed = m_.activePlayer.getSpeed()
+        finalSpeed   = mag(m_.activePlayer.getVelocity() + vector(-2,0,0))
+        if (m_.activePlayer.position.y == 0 and m_.env.notPaused and
+        (m_.activePlayer.getSpeed() < m_.activePlayer.maxSpeed or finalSpeed < initialSpeed)):
             m_.activePlayer.changeVelocity( (-2,0,0 ) )
-        elif m_.activePlayer.getID() > 1:
+        elif m_.activePlayer.getID() > 1  and (m_.env.notPaused == False):
             m_.leftKeyDown_Paused()
 
     def rightKeyDown(m_):
-        if m_.activePlayer.position.y == 0 and m_.env.notPaused:
+        initialSpeed = m_.activePlayer.getSpeed()
+        finalSpeed   =  mag(m_.activePlayer.getVelocity() + vector(2,0,0))
+        if (m_.activePlayer.position.y == 0 and m_.env.notPaused and
+        (m_.activePlayer.getSpeed() < m_.activePlayer.maxSpeed or finalSpeed < initialSpeed)):
           m_.activePlayer.changeVelocity( (2,0,0 ) )
-        elif m_.activePlayer.getID() < len(m_.env.activePlayers):
+        elif m_.activePlayer.getID() < len(m_.env.activePlayers) and (m_.env.notPaused == False):
             m_.rightKeyDown_Paused()
 
     def upKeyDown(m_):
-       if m_.activePlayer.position.y == 0:
+        initialSpeed = m_.activePlayer.getSpeed()
+        finalSpeed   = mag(m_.activePlayer.getVelocity() + vector(0,0,-2))
+        if (m_.activePlayer.position.y == 0 and
+        (m_.activePlayer.getSpeed() < m_.activePlayer.maxSpeed or finalSpeed < initialSpeed)):
             m_.activePlayer.changeVelocity( (0,0,-2 ) )
 
     def downKeyDown(m_):
-       if m_.activePlayer.position.y == 0:
+        initialSpeed = m_.activePlayer.getSpeed()
+        finalSpeed   = mag(m_.activePlayer.getVelocity() + vector(0,0,2))
+        if (m_.activePlayer.position.y == 0  and
+        (m_.activePlayer.getSpeed() < m_.activePlayer.maxSpeed or finalSpeed < initialSpeed)):
             m_.activePlayer.changeVelocity( (0,0,2 ) )
 
     def spaceKeyDown(m_):

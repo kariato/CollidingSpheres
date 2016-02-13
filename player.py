@@ -8,26 +8,19 @@ class player(particle):
 
         m_.dt = .05
         particle.__init__(m_, position, id )
-        m_.playerComponents = []            ## Holds all player components, i.e. arms, legs and and various other shapes
-                                            ## location of shapes should be relative to player position m_.position
-                                            ## Example: if player is located at COM position <5,0,0> and head is typically 2m above
-                                            ## COM location assignment should look like
-                                            ## head = sphere( pos = vector(2,0,0) )
-
+        m_.playerComponents = []
         m_.jumpCharge   = vector(0, 1,  0)
         m_.jumpStrength = vector(0, 10, 0)
         m_.bottom = -2
         m_.rollEnable = True
         m_.boundaryList = []
-
+        m_.maxSpeed     = 15
 
     def fullRender(m_):
         m_.dr = m_.velocity * m_.dt
         m_.position += m_.dr
-        for component in m_.playerComponents:                       ## Should be called for complex players 
-            component.pos = m_.position + component.posRel          ## move all parts of player  e.i. arms, legs, body etc to
-                                                                    ## their correct relative location, by itterating through components list and adding
-                                                                    ## component relative positions to the location ( m_.position )
+        for component in m_.playerComponents:
+            component.pos = m_.position + component.posRel
 
     def roll(m_):
         if m_.rollEnable :
@@ -63,4 +56,7 @@ class player(particle):
         m_.dt = newDt
 
     def addBoundingSphere(m_, boundingSphere):
-        m_.boundaryList.append(boundingSphere)
+        m_.boundaryList.append(boundingSphere)\
+
+    def getSpeed(m_):
+        return m_.velocity.mag
