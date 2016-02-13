@@ -65,8 +65,9 @@ class particle:
     def changeForce(m_, newForce):
         m_.netForce += newForce
 
-    def setForce(_m, newForce):
-        m_.netForce = newForce
+    def setForce(m_, newForce):
+        m_.netForce += newForce
+        m_.changeAcceleration(newForce/m_.mass)
 
     def getEnergy(m_):
         m_.energy = .5*m_.mass*m_.velocity.mag2
@@ -82,7 +83,7 @@ class particle:
         return m_.id
 
     def age(m_):
-        m_.time += dt
+        m_.time += m_.dt
 
     def getAge(m_):
         return m_.time

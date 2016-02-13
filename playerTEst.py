@@ -34,7 +34,7 @@ class enviornment:
 
         m_.uFric = .5
 
-        m_.smartPlyr = smartPlayer(vector(-10, 0, 10), 2)
+        m_.smartPlyr = smartPlayer(vector(-10, 0, 10), 3, 2)
         m_.smartPlyr.addComponent(sphere(radius = 2, color = color.blue), vector(0,-6,0))
         m_.smartPlyr.setTarget(vector(0,0,0))
 

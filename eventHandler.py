@@ -106,7 +106,8 @@ class eventHandler:
             m_.activePlayer.setPosition(vector(-5,0,0))
 
     def pKeyDown(m_):
-        m_.activePlayer.printStats()
+        m_.env.smartPlyr.printStats()
+        #m_.activePlayer.printStats()
 
     def oneKeyDown(m_):
         m_.activePlayer = m_.env.p1
@@ -118,7 +119,6 @@ class eventHandler:
     def threeKeyDown(m_):
         m_.activePlayer = m_.env.p3
         print('Player 3 is active')
-
 
     def f1KeyDown(m_):
 
