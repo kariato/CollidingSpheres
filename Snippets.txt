@@ -1,0 +1,146 @@
+## Test function execution time
+
+                from timeit import default_timer as timer
+                start = timer()
+                time = timer() - start
+                print ( time )
+
+
+
+
+## Collision Alg 3  ~ 3 faster than Alg 3
+    def check(m_):
+         length = len(m_.objList)
+         for j in range(0, length):
+            objX = m_.objList[j]
+            for i in range(j+1, length):
+                objY = m_.objList[i]
+##                print( 'Checking Collisions between', objX.getID(), objY.getID())
+                distance = objX.getPosition() - objY.getPosition()
+                minDistance = objX.body.radius + objY.body.radius
+                if distance.mag <= minDistance:
+                    m_.handleCollision(objX, objY)
+                    return  ## Only handle 1 collision at a time
+                            ## interaction detected, return to main to
+                            ## calculate results before resuming collision checks
+
+
+
+
+##   Collision Alg 2  .5(n-1)^2   Efficient
+   def check(m_):
+         for objX in m_.objList:
+           for objY in m_.objList:
+               if objX.getID < objY.getID:
+                    distance = objX.getPosition() - objY.getPosition()
+                    minDistance = objX.body.radius + objY.body.radius
+                    if distance.mag <= minDistance:
+                        m_.handleCollision(objX, objY)
+                        return  ## Only handle 1 collision at a time
+                                ## interaction detected, return to main to
+                                ## calculate results before resuming collision checks
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Fully working but inefficient Collision checking algorithm .5*n^2 - .5 n for n players
+## change to objX.getID < objY.getID => .5n^2 + .5n
+   def check(m_):
+        n = 0
+        for objX in m_.objList:
+           for objY in m_.objList:
+
+               if objX.getID != objY.getID:
+                   n += 1
+                   distance = objX.getPosition() - objY.getPosition()
+                   minDistance = objX.body.radius + objY.body.radius
+                   if distance.mag <= minDistance:
+                       m_.handleCollision(objX, objY)
+                       return  ## Only handle 1 collision at a time
+                                ## interaction detected, return to main to
+                                ## calculate results before resuming collision checks
+               print(n)
+
+
+
+####            for player in m_.activePlayers:
+##
+##            
+##                if( abs(player.position.y) < .05):
+##                    player.setVelocity( vector(0,0,0) )
+##                    player.setAcceleration( vector(0,0,0) )
+##                    player.position.y = 0
+##                    player.jumpCharge = vector(0,1,0)
+##                    m_.activeForces.remove('floor')
+
+
+
+
+##        if( 'floor' in m_.activeForces ):
+####            for player in m_.activePlayers:
+##
+##
+##                if( abs(player.position.y) < .05):
+##                    player.setVelocity( vector(0,0,0) )
+##                    player.setAcceleration( vector(0,0,0) )
+##                    player.position.y = 0
+##                    player.jumpCharge = vector(0,1,0)
+##                    m_.activeForces.remove('floor')
+
+
+
+
+##      A player with multiple appendages
+
+        m_.p1 = player(vector(-10, 0, 0), 1)
+        m_.p1.addComponent(sphere(radius = 2, color = color.red), vector(0,-6,0))
+        m_.p1.body.material = materials.wood
+        m_.p1.setAcceleration(vector(0,-9.81,0))
+        m_.p1.addComponent(pyramid(axis = (0,4,0) ,size =(4,4,4), color = color.red), vector(0,0,0))
+        m_.p1.addComponent(box( size = (4,8,4), pos = (0,0,0), color = color.red), vector( 0,-4,0))
+
+
+
+
+
+
+##      Collect Momentum and Energy information in collision
+
+                    if distance.mag <= minDistance:
+                        pSys = vector(0,0,0)
+                        eSys = 0
+                        for objZ in m_.objList:
+                            objZ.calcMomentum()
+##                            print (objZ.getID,objZ.momentum, objZ.getEnergy())
+                            pSys += objZ.momentum
+                            eSys += objZ.getEnergy()
+
+##
+                        print('Pi', pSys, 'Ei', eSys)
+                        m_.handleCollision(objX, objY)
+
+                        pSys = vector(0,0,0)
+                        eSys = 0
+
+                        for obji in m_.objList:
+                            obji.calcMomentum()
+                            pSys += obji.momentum
+                            eSys += obji.getEnergy()
+                            ##print (obji.getID(),obji.momentum, obji.getEnergy())
+
+                        print('Pf', pSys,'Ef', eSys)
+##
+
+
+
+
