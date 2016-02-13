@@ -41,11 +41,19 @@ class particle:
     def getVelocity(m_):       
         return m_.velocity
 
-    def updateVelocity(m_):
+    def updateVelocity(m_, limited = 'True'):
+        vel = m_.velocity
         m_.velocity += m_.acceleration * m_.dt
+        if(limited):
+            m_.velocity = vel
 
-    def changeVelocity(m_, dv):
+
+    def changeVelocity(m_, dv, limited = 'True'):
+        vel = m_.velocity
         m_.velocity += dv
+        if(limited):
+            m_.velocity = vel
+
 
     def setVelocity(m_, newVelocity):
         m_.velocity = newVelocity
@@ -65,9 +73,14 @@ class particle:
     def changeForce(m_, newForce):
         m_.netForce += newForce
 
-    def setForce(m_, newForce):
+    def setForce(m_, newForce, limit = 'True'):
+
+        force = m_.netForce
         m_.netForce += newForce
-        m_.changeAcceleration(newForce/m_.mass)
+        if limit:
+            m_.netForce = m_.netForce
+
+        m_.setAcceleration(newForce/m_.mass)
 
     def getEnergy(m_):
         m_.energy = .5*m_.mass*m_.velocity.mag2

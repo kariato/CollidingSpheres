@@ -6,9 +6,10 @@ class smartPlayer(player):
     def __init__(self, position, nInputs, id = 'none'):
         player.__init__(self, position, id)
 
-        self.brain  = perceptron(3,.1)
-        self.target = list()
         self.nInputs = nInputs
+        self.brain  = perceptron(nInputs,.000001)
+        self.target = list()
+        self.error  = vector(0,0,)
 
     def chase(self): ##Seek(ArrayList targets)
         desired = vector(self.position - self.target[0])
@@ -26,8 +27,9 @@ class smartPlayer(player):
                     forces.append(self.chase())
                 result = vector(self.brain.feedForward(forces))## Brain calculates 1 new force
                 self.setForce(result)
-                error = vector(self.position - self.target[0])
-                self.brain.train(forces, error)
+                self.error = vector(self.target[0]- self.position)
+
+                self.brain.train(forces, self.error)
             else:
                 print('No target Set')
 
@@ -35,3 +37,13 @@ class smartPlayer(player):
 
     def setTarget(self, targetPos):
         self.target.append(targetPos)
+
+
+    def printStats(self):
+        print('PlayerID: ' , self.id )
+        print(' Position', self.getPosition() )
+        print('velocity', self.getVelocity() )
+        print('accelertaion', self.getAcceleration())
+        print('Player Bottom', self.getBottom())
+        print('weight', self.brain.weights)
+        print('error', self.error)

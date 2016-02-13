@@ -34,9 +34,10 @@ class enviornment:
 
         m_.uFric = .5
 
-        m_.smartPlyr = smartPlayer(vector(-10, 0, 10), 3, 2)
+        m_.smartPlyr = smartPlayer(vector(-10, 0, 5), 3, 2)
         m_.smartPlyr.addComponent(sphere(radius = 2, color = color.blue), vector(0,-6,0))
-        m_.smartPlyr.setTarget(vector(0,0,0))
+        m_.smartPlyr.setTarget(vector(2,0,2))
+        m_.smartPlyr.mass = 20
 
         m_.p1 = player   (vector(-10, 0,  0), 1)
 #         m_.p2 = player   (vector(  0, 0, -3), 2)
@@ -91,6 +92,7 @@ class enviornment:
 
 
                 m_.smartPlyr.steer()
+                m_.smartPlyr.updateVelocity()
                 m_.smartPlyr.fullRender()
                 for player in m_.activePlayers:
                     player.fullRender()

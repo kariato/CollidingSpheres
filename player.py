@@ -44,13 +44,12 @@ class player(particle):
     def getBottom(m_):
         return m_.position.y + m_.bottom
 
-
     def printStats(m_):
-        print( 'PlayerID: ' , m_.id )
-        print( ' Position', m_.getPosition() )
-        print(  'velocity', m_.getVelocity() )
-        print( 'Player Bottom', m_.getBottom() )
-
+        print('PlayerID: ' , m_.id )
+        print(' Position', m_.getPosition() )
+        print('velocity', m_.getVelocity() )
+        print('accelertaion', m_.getAcceleration())
+        print('Player Bottom', m_.getBottom())
 
     def setTimeResolution(m_, newDt):
         m_.dt = newDt

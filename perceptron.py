@@ -9,10 +9,6 @@ class perceptron:
         self.nInputs = numInputs
         self.inputs      = list()
         self.weights     = list()
-        self.biasWeight  = 0
-        self.output      = 0
-        self.guess       = 0
-        self.sum         = 0
         self.learningConstant = lk
 
         for i in range(0, self.nInputs):
@@ -27,21 +23,15 @@ class perceptron:
             self.sum.z += inputs[i].z * self.weights[i]
         return self.sum
 
-    def activate(self):
-        if self.sum > 0:
-            self.guess = 1
-            return 1
-        else:
-            self.guess = -1
-            return -1
+
 
     def train(self, forces, error):
         for i in range(0, len(forces)):
-            deltax = self.learningConstant * error.x * forces[i].x      ## Calculate the change for each input
-            deltay = self.learningConstant * error.y * forces[i].y      ## Calculate the change for each input
-            deltaz = self.learningConstant * error.z * forces[i].z      ## Calculate the change for each input
-            delta  = (deltax + deltay + deltaz)
-            self.weights[i] += delta
+            self.weights[i] = self.learningConstant * error.x * forces[i].x      ## Calculate the change for each input
+            self.weights[i] = self.learningConstant * error.y * forces[i].y      ## Calculate the change for each input
+            self.weights[i]= self.learningConstant * error.z * forces[i].z      ## Calculate the change for each input
+
+
 
 class trainer:
     def __init__(self, m, b):
