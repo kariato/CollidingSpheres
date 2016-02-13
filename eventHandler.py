@@ -9,6 +9,7 @@ class eventHandler:
         m_.env.scene1.bind('keyup'  , m_.handleKeyUp   )
         m_.env.scene1.bind('click'  , m_.handleClick   )
 
+
     def handleKeyDown(m_, evt ):
         if evt.key == 'left':
             m_.leftKeyDown()
