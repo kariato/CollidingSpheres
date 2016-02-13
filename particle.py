@@ -23,8 +23,6 @@ class particle:
  
         m_.body         = vector(0,0,0)                    ## any simple shape
 
-
-
     def getPosition(m_):
         return m_.position
 

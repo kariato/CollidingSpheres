@@ -8,18 +8,7 @@ from collision import *
 from math import *
 from CourseObjects import *
 from fancyBalls import *
-#
-#
-#
-# ## Known Bugs, if more than 1 player jumps the first jumper will fall through the floor because, the player 1 id is
-# ## removed from association with key value
-# ## consider making id value a list of ids and restructure forces
-#
-#
-#
-# ################################### Create Course ################################
-#
-#
+
 class enviornment:
 
     def __init__(m_):
@@ -55,8 +44,6 @@ class enviornment:
         m_.p4.mass = 40
 
 ## Other Player Attributes
-## make_trail = True, trail_type = 'points', interval = 20, retain = 400
-
         m_.p1.addComponent(sphere(radius = 2, color = color.red ), vector(0,-6,0))
         m_.p1.body.material = materials.wood
         m_.p1.bottom = -8
@@ -89,7 +76,6 @@ class enviornment:
 
         m_.collisionTest1 = collisionMonitor( m_.activePlayers )
 
-
     def run(m_):
 
         while True:
@@ -114,7 +100,6 @@ class enviornment:
                 print('Active Forces List: ', m_.activeForcesList)
                 print('Active Forces Dict: ', m_.activeForcesDict)
                 m_.pauseCount = 1
-
 
     def floor(m_):
         if 'floor' in m_.activeForcesList:
@@ -153,8 +138,6 @@ class enviornment:
 
         newPlayerPosition   = vector()
         newPlayerPosition   = position
-##        newPlayerPosition.y = 0
-
 
         if newPlayerPosition.x < -50:
             newPlayerPosition.x = -50
@@ -188,7 +171,6 @@ class enviornment:
             m_.activePlayers.append(newPlayer)
             m_.rollEnable = False
 
-
     def playerSelect(m_, player, psBox ):
 
         n_steps = 20
@@ -198,17 +180,6 @@ class enviornment:
         psBox.color = color.red
 
         m_.scene1.center = psBox.pos
-
-        # center_begin = vector()
-        # center_end   = vector()
-
-        # center_begin = m_.scene1.center
-        # center_end   = psBox.pos
-        # scroll_Increment = (center_end - center_begin)/n_steps
-
-        # while m_.scene1.center != center_end:
-        #     rate (20)
-        #     m_.scene1.center += scroll_Increment
 
 ############################### Main Program #############################################
 env1 = enviornment()

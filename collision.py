@@ -34,9 +34,6 @@ class collisionMonitor:
                 minDistance = objX.body.radius + objY.body.radius
                 if distance.mag <= minDistance:
                     m_.handleCollision(objX, objY)
-                    #return  ## Only handle 1 collision at a time
-                            ## interaction detected, return to main to
-                            ## calculate results before resuming collision checks
 
     def handleCollision(m_,objX, objY):
         
