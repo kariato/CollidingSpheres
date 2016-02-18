@@ -8,6 +8,7 @@ class eventHandler:
         m_.env.scene1.bind('keydown', m_.handleKeyDown )
         m_.env.scene1.bind('keyup'  , m_.handleKeyUp   )
         m_.env.scene1.bind('click'  , m_.handleClick   )
+        m_.psBox = box()
 
 
     def handleKeyDown(m_, evt ):

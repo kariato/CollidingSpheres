@@ -19,7 +19,7 @@ class enviornment:
         m_.globalTime = 0
         m_.globalDt   = 10/m_.rate
 
-        m_.notPaused = True
+        m_.notPaused = False
         m_.pauseCount = 0
         m_.activeForcesDict    = dict()
         m_.activeForcesList    = list()
@@ -36,8 +36,11 @@ class enviornment:
 
         m_.smartPlyr = smartPlayer(vector(-10, 0, 5), 3, 2)
         m_.smartPlyr.addComponent(sphere(radius = 2, color = color.blue), vector(0,-6,0))
-        m_.smartPlyr.setTarget(vector(2,0,2))
+        target = pyramid(pos=(7,0,-7), axis=(0,-1,0))
+        target.color = color.green
+        m_.smartPlyr.setTarget(target.pos)
         m_.smartPlyr.mass = 20
+        m_.smartPlyr.setVelocity(vector(-2,0,6))
 
         m_.p1 = player   (vector(-10, 0,  0), 1)
 #         m_.p2 = player   (vector(  0, 0, -3), 2)
@@ -53,9 +56,7 @@ class enviornment:
         m_.p1.addComponent(sphere(radius = 2, color = color.red ), vector(0,-6,0))
         m_.p1.body.material = materials.wood
         m_.p1.bottom = -8
-#
-#
-#         m_.activePlayers.append(m_.p1)
+        m_.activePlayers.append(m_.p1)
 #
 #         m_.p2.addComponent(sphere(radius = 2, color = color.red),vector(0,-6,0))
 #         m_.p2.body.color = color.green

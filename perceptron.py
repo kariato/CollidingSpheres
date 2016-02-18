@@ -14,13 +14,11 @@ class perceptron:
         for i in range(0, self.nInputs):
             self.weights.append(uniform(-1,1))
 
-    def feedForward(self, inputs):
-        self.inputs = inputs
+    def feedForward(self, forces):
+        self.inputs = forces
         self.sum = vector(0,0,0)
         for i in range(0, self.nInputs):
-            self.sum.x += inputs[i].x * self.weights[i]
-            self.sum.y += inputs[i].y * self.weights[i]
-            self.sum.z += inputs[i].z * self.weights[i]
+            self.sum += forces[i] * self.weights[i]
         return self.sum
 
 

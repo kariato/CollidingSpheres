@@ -7,7 +7,7 @@ class smartPlayer(player):
         player.__init__(self, position, id)
 
         self.nInputs = nInputs
-        self.brain  = perceptron(nInputs,.000001)
+        self.brain  = perceptron(nInputs,.1)
         self.target = list()
         self.error  = vector(0,0,)
 
@@ -28,7 +28,6 @@ class smartPlayer(player):
                 result = vector(self.brain.feedForward(forces))## Brain calculates 1 new force
                 self.setForce(result)
                 self.error = vector(self.target[0]- self.position)
-
                 self.brain.train(forces, self.error)
             else:
                 print('No target Set')

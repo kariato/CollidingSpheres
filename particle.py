@@ -22,6 +22,7 @@ class particle:
         m_.energy       = 0
  
         m_.body         = vector(0,0,0)                    ## any simple shape
+        m_.maxForce     = 10
 
     def getPosition(m_):
         return m_.position
@@ -77,8 +78,10 @@ class particle:
 
         force = m_.netForce
         m_.netForce += newForce
+        m_.netForce = newForce
         if limit:
             m_.netForce = m_.netForce
+
 
         m_.setAcceleration(newForce/m_.mass)
 
