@@ -22,7 +22,6 @@ class particle:
         m_.energy       = 0
  
         m_.body         = vector(0,0,0)                    ## any simple shape
-        m_.maxForce     = 10
 
     def getPosition(m_):
         return m_.position
@@ -42,19 +41,11 @@ class particle:
     def getVelocity(m_):       
         return m_.velocity
 
-    def updateVelocity(m_, limited = 'True'):
-        vel = m_.velocity
+    def updateVelocity(m_):
         m_.velocity += m_.acceleration * m_.dt
-        if(limited):
-            m_.velocity = vel
 
-
-    def changeVelocity(m_, dv, limited = 'True'):
-        vel = m_.velocity
+    def changeVelocity(m_, dv):
         m_.velocity += dv
-        if(limited):
-            m_.velocity = vel
-
 
     def setVelocity(m_, newVelocity):
         m_.velocity = newVelocity
@@ -74,16 +65,8 @@ class particle:
     def changeForce(m_, newForce):
         m_.netForce += newForce
 
-    def setForce(m_, newForce, limit = 'True'):
-
-        force = m_.netForce
-        m_.netForce += newForce
+    def setForce(_m, newForce):
         m_.netForce = newForce
-        if limit:
-            m_.netForce = m_.netForce
-
-
-        m_.setAcceleration(newForce/m_.mass)
 
     def getEnergy(m_):
         m_.energy = .5*m_.mass*m_.velocity.mag2
@@ -99,7 +82,7 @@ class particle:
         return m_.id
 
     def age(m_):
-        m_.time += m_.dt
+        m_.time += dt
 
     def getAge(m_):
         return m_.time

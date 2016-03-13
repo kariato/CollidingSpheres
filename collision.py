@@ -36,6 +36,7 @@ class collisionMonitor:
                     m_.handleCollision(objX, objY)
 
     def handleCollision(m_,objX, objY):
+        
         scale            = 5
         vPlaneOffset     = vector(0,3,0)
         rNorm_vec        = vector()

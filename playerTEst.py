@@ -8,7 +8,6 @@ from collision import *
 from math import *
 from CourseObjects import *
 from fancyBalls import *
-from smartPlayer import *
 
 class enviornment:
 
@@ -19,7 +18,7 @@ class enviornment:
         m_.globalTime = 0
         m_.globalDt   = 10/m_.rate
 
-        m_.notPaused = False
+        m_.notPaused = True
         m_.pauseCount = 0
         m_.activeForcesDict    = dict()
         m_.activeForcesList    = list()
@@ -34,47 +33,40 @@ class enviornment:
 
         m_.uFric = .5
 
-        m_.smartPlyr = smartPlayer(vector(-10, 0, 5), 3, 2)
-        m_.smartPlyr.addComponent(sphere(radius = 2, color = color.blue), vector(0,-6,0))
-        target = pyramid(pos=(7,0,-7), axis=(0,-1,0))
-        target.color = color.green
-        m_.smartPlyr.setTarget(target.pos)
-        m_.smartPlyr.mass = 20
-        m_.smartPlyr.setVelocity(vector(-2,0,6))
-
         m_.p1 = player   (vector(-10, 0,  0), 1)
-#         m_.p2 = player   (vector(  0, 0, -3), 2)
-#         m_.p3 = player   (vector(  7, 0, .2), 3)
-#         m_.p4 = fancyBall(vector(  0, 0,  3), 4)
-#
+        m_.p2 = player   (vector(  0, 0, -3), 2)
+        m_.p3 = player   (vector(  7, 0, .2), 3)
+        m_.p4 = fancyBall(vector(  0, 0,  3), 4)
+
         m_.p1.mass = 80
-#         m_.p2.mass = 40
-#         m_.p3.mass = 25
-#         m_.p4.mass = 40
-#
-# ## Other Player Attributes
+        m_.p2.mass = 40
+        m_.p3.mass = 25
+        m_.p4.mass = 40
+
+## Other Player Attributes
         m_.p1.addComponent(sphere(radius = 2, color = color.red ), vector(0,-6,0))
         m_.p1.body.material = materials.wood
         m_.p1.bottom = -8
-        m_.activePlayers.append(m_.p1)
-#
-#         m_.p2.addComponent(sphere(radius = 2, color = color.red),vector(0,-6,0))
-#         m_.p2.body.color = color.green
-#         m_.p2.body.material = materials.marble
-#         m_.p2.bottom = 2
-#         m_.activePlayers.append(m_.p2)
-#
-#         m_.p3.addComponent(sphere(radius = 2, color = color.orange),vector(0,-6,0))
-#         m_.p3.body.color = color.orange
-#         m_.p3.body.material = materials.marble
-#         m_.p3.bottom = 4
-#         m_.activePlayers.append(m_.p3)
-#
-#         m_.activePlayers.append(m_.p4)
-# ## Other Player Attributes
 
-##        m_.floor1    = flr(m_.p1.bottom)
-        m_.floor1    = flr(-8)
+
+        m_.activePlayers.append(m_.p1)
+
+        m_.p2.addComponent(sphere(radius = 2, color = color.red),vector(0,-6,0))
+        m_.p2.body.color = color.green
+        m_.p2.body.material = materials.marble
+        m_.p2.bottom = 2
+        m_.activePlayers.append(m_.p2)
+
+        m_.p3.addComponent(sphere(radius = 2, color = color.orange),vector(0,-6,0))
+        m_.p3.body.color = color.orange
+        m_.p3.body.material = materials.marble
+        m_.p3.bottom = 4
+        m_.activePlayers.append(m_.p3)
+
+        m_.activePlayers.append(m_.p4)
+## Other Player Attributes
+
+        m_.floor1    = flr(m_.p1.bottom)
         print(m_.floor1.getFloorTop())
         m_.frontWall = obstacle((0,     -6.75, -23),(110, 0,  0),2.5, 3)
         m_.backWall = obstacle ((0,     -6.75,  23),(110, 0,  0),2.5, 3)
@@ -91,10 +83,6 @@ class enviornment:
             while m_.notPaused:
                 rate(m_.rate)
 
-
-                m_.smartPlyr.steer()
-                m_.smartPlyr.updateVelocity()
-                m_.smartPlyr.fullRender()
                 for player in m_.activePlayers:
                     player.fullRender()
                     player.updateVelocity()
@@ -171,19 +159,17 @@ class enviornment:
         id = newPlayer.getID()      ## Use PlayerID to generate a new color
         colorID = id  - 3              ## StartGenerating colors from ID 1
 
-        if len(m_.activePlayers) != 0:
-            newColor   =  [int(x) for x in bin(colorID)[2:]]
+        newColor   =  [int(x) for x in bin(colorID)[2:]]
 
-            if( len(newColor) <= 3):
-                while len(newColor) < 3:
-                    newColor.append(0)
-        else:
-            newColor = color.red
-        print(newColor)
-        newPlayer.mass = 80
-        newPlayer.addComponent(sphere(radius = 2, color = newColor ), vector(0,-6,0))
-        m_.activePlayers.append(newPlayer)
-        m_.rollEnable = False
+        if( len(newColor) <= 3):
+            while len(newColor) < 3:
+                newColor.append(0)
+
+            print(newColor)
+            newPlayer.mass = 80
+            newPlayer.addComponent(sphere(radius = 2, color = newColor ), vector(0,-6,0))
+            m_.activePlayers.append(newPlayer)
+            m_.rollEnable = False
 
     def playerSelect(m_, player, psBox ):
 
