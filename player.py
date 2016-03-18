@@ -1,5 +1,6 @@
 from visual import *
 from particle import *
+from random import randint
 
 class player(particle):
 
@@ -56,8 +57,14 @@ class player(particle):
         m_.dt = newDt
 
     def addBoundingSphere(m_, boundingSphere):
-        m_.boundaryList.append(boundingSphere)\
+        m_.boundaryList.append(boundingSphere)
 
     def getSpeed(m_):
         return m_.velocity.mag
+
+    def walk(m_):
+        dv = vector(randint(-3,3), 0, randint(-3,3))
+        m_.changeVelocity(dv)
+
+
 

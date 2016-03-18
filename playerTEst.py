@@ -9,6 +9,8 @@ from math import *
 from CourseObjects import *
 from fancyBalls import *
 from playerManager import*
+import threading
+import time
 
 class enviornment:
 
@@ -34,9 +36,9 @@ class enviornment:
         m_.scene1.title = 'SphereLand Lab Frame'
         m_.scene1.range = (30,10,5)
         m_.playerMgr.scene( m_.scene1)
-        m_.uFric = .5
+        m_.uFric = .02
 
-        m_.playerMgr.createPlayer(vector(-10, 0,  0))
+        m_.Walker = m_.playerMgr.createPlayer(vector(-10, 0,  0))
         m_.playerMgr.createPlayer(vector(5, 0,  0))
         m_.playerMgr.createPlayer(vector(5, 0,  5))
 
@@ -44,7 +46,7 @@ class enviornment:
 
 
 ## Other Player Attributes
-        m_.playerMgr.buildPlayers(sphere(radius = 2, color = color.red ), vector(0,-6,0), materials.wood, 0)
+        m_.playerMgr.buildPlayers(sphere(radius = 2, color = (.996,.616,.016) ), vector(0,-6,0), materials.wood, 0)
         m_.playerMgr.buildPlayers(sphere(radius = 2, color = color.blue ), vector(0,-6,0), materials.wood, 1)
         m_.playerMgr.buildPlayers(sphere(radius = 2, color = color.green ), vector(0,-6,0), materials.wood, 2)
         m_.playerMgr.setPlayerMass(20)
@@ -62,8 +64,11 @@ class enviornment:
 
         m_.collisionTest1 = collisionMonitor( m_.playerMgr.activePlayers )
 
+        m_.randomWalk = randomWalk(1,m_.Walker,.5)
+
     def run(m_):
 
+        m_.randomWalk.start()
         while True:
             rate(m_.rate)
             while m_.notPaused:
@@ -72,6 +77,7 @@ class enviornment:
                 m_.playerMgr.applyForces(m_)
                 m_.collisionTest1.check()
                 m_.walls()
+
 
             if m_.pauseCount == 0:
                 print('Paused')
@@ -116,6 +122,20 @@ class enviornment:
     def addForce(m_, newForce , newPlayerID ):
         m_.activeForcesList.append(newForce)
         m_.activeForcesDict.update({newForce: newPlayerID})
+
+class randomWalk (threading.Thread):
+    def __init__(self, threadID, walkerName ,sleep):
+        threading.Thread.__init__(self)
+        self.threadID = threadID
+        self.SLEEP = sleep
+        self.walker = walkerName
+
+    def run(self):
+        while true:
+            self.walker.walk()
+            time.sleep(self.SLEEP)
+
+
 
 
 ############################### Main Program #############################################
