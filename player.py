@@ -63,7 +63,7 @@ class player(particle):
         return m_.velocity.mag
 
     def walk(m_):
-        dv = vector(randint(-3,3), 0, randint(-3,3))
+        dv = vector(randint(-1,1), 0, randint(-1,1))
         m_.changeVelocity(dv)
 
 

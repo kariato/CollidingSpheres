@@ -168,3 +168,16 @@ class playerManager:
             p = self.activePlayers[playerID]
             p.removeForce(forceName)
             self.nonZero_FNet_ID.remove(p.getID())
+
+    def jump(self, envObj):
+
+        active = self.activePlayers[self.activePlayerID]
+        id = active.getID()
+
+        print(id, ' is jumping ')
+        if active.position.y == 0:
+            active.changeVelocity(active.jumpCharge)
+            active.setAcceleration(vector(0,-9.81,0))
+            envObj.activeForcesList.append('floor')
+            envObj.activeForcesDict.update({'floor':id})
+            self.setForce(id,'floor')

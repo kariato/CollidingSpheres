@@ -102,7 +102,10 @@ class eventHandler:
             self.activePlayer.changeVelocity( (0,0,2 ) )
 
     def spaceKeyDown(self):
+
+
         if self.activePlayer.position.y == 0:
+            self.activePlayer = self.playerManager.getActivePlayer()
             self.activePlayer.chargeJump()
 
     def fKeyDown(self):
@@ -171,12 +174,7 @@ class eventHandler:
             self.spaceKeyUp()
 
     def spaceKeyUp(self):
-        if self.activePlayer.position.y == 0:
-            self.activePlayer.changeVelocity(self.activePlayer.jumpCharge)
-            self.activePlayer.setAcceleration(vector(0,-9.81,0))
-            self.env.activeForcesList.append('floor')
-            self.env.activeForcesDict.update({'floor':self.activePlayer.id})
-            self.playerManager.setForce(self.activePlayer.getID(),'floor')
+        self.playerManager.jump(self.env)
 
 
     def handleClick(self,evt):
