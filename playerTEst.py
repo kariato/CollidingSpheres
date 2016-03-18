@@ -36,7 +36,7 @@ class enviornment:
         m_.scene1.title = 'SphereLand Lab Frame'
         m_.scene1.range = (30,10,5)
         m_.playerMgr.scene( m_.scene1)
-        m_.uFric = .05
+        m_.uFric = .15
 
         m_.Walker0 = m_.playerMgr.createPlayer(vector(-10, 0,  0))
         m_.Walker1 = m_.playerMgr.createPlayer(vector(5, 0,  0))
@@ -74,7 +74,7 @@ class enviornment:
 
     def run(m_):
 
-        m_.randomWalk.start()
+        #m_.randomWalk.start()
         while True:
             rate(m_.rate)
             while m_.notPaused:
