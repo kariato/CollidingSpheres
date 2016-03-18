@@ -1,3 +1,41 @@
+
+        playerMgr.createPlayer(vector(  0, 0, -3))
+        playerMgr.createPlayer(vector(  7, 0, .2))
+        playerMgr.createPlayer(vector(  0, 0,  3))
+
+
+
+        m_.activePlayers.append(m_.p1)
+
+        m_.p2.addComponent(sphere(radius = 2, color = color.red),vector(0,-6,0))
+        m_.p2.body.color = color.green
+        m_.p2.body.material = materials.marble
+        m_.p2.bottom = 2
+        m_.activePlayers.append(m_.p2)
+
+        m_.p3.addComponent(sphere(radius = 2, color = color.orange),vector(0,-6,0))
+        m_.p3.body.color = color.orange
+        m_.p3.body.material = materials.marble
+        m_.p3.bottom = 4
+        m_.activePlayers.append(m_.p3)
+
+        m_.activePlayers.append(m_.p4)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Test function execution time
 
                 from timeit import default_timer as timer

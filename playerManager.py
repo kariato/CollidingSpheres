@@ -1,0 +1,137 @@
+from __future__ import print_function
+from __future__ import division
+from visual import *
+from particle import *
+from player import *
+
+class playerManager:
+    def __init__(self):
+        self.activePlayers = list()
+        self.playerCount = 0
+        self.activePlayerID = 0
+
+
+    def createPlayer(self, position = vector):
+        newPlayer = player(position, self.playerCount)
+        self.activePlayers.append(newPlayer)
+        self.playerCount += 1
+        if len(self.activePlayers) == 1:
+            self.active = self.activePlayers[0]
+
+        return newPlayer
+
+    def setPlayerMass(self, mass, id = 'none'):
+
+        ##If no id is given set all player to this mass
+        if id == 'none':
+            for p in self.activePlayers:
+                p.mass = mass
+        else:
+            self.activePlayers[id].mass = mass
+
+    def buildPlayers(self, shape, relativePosition = 0, material='none', id  ='none'):
+
+        ##If no id is given add for all players
+        if id == 'none':
+            for p in self.activePlayers:
+                p.addComponent(shape, relativePosition + vector(6,0,0) * p.getID())
+                p.body.material = material
+                p.body.radius = shape.radius
+                p.rollEnable = True
+                ## Need to check that it is a sphere first
+                                                    ## If not disable Rolling
+        else:
+            self.activePlayers[id].addComponent(shape, relativePosition)
+            self.activePlayers[id].body.material = material
+            self.activePlayers[id].body.radius = shape.radius     ## Need to check that it is a sphere first
+            self.activePlayers[id].rollEnable = True              ## If not disable rolling
+
+
+
+    def addToPlayer(self, id, shape, relativePosition = 0, material='none' ):
+            self.activePlayers[id].addComponent(self, shape, relativePosition, color, material)
+            self.activePlayers[id].body.material = material
+
+
+    def updatePlayers(self):
+        for player in self.activePlayers:
+            player.fullRender()
+            player.updateVelocity()
+            player.roll()                   ## Assumes player is a sphere, need to add player flag 'rollEnabled'
+
+
+
+    def setPlayerBottom(self, yValue):
+        for player in self.activePlayers:
+            player.bottom = yValue
+
+    def getPlayerBottom(self, id):
+        return self.activePlayers[id].bottom
+
+    def getActivePlayer(self):
+        return self.activePlayers[self.activePlayerID]
+
+    def playerSelect(self):
+            active = self.activePlayers[self.activePlayerID]
+            self.psBox = box(pos = active.getPosition(),length = 6, height = 6, width = 6)
+            self.psBox.pos.y = -6
+            self.psBox.opacity = .1
+            self.psBox.color = color.blue
+            self.scene.center = self.psBox.pos
+
+    def changePlayer(self, IncVal):
+
+        if (self.activePlayerID + IncVal) < 0 or (self.activePlayerID + IncVal + 1) > self.playerCount:
+            return self.activePlayers[self.activePlayerID]
+        else:
+            active  = self.activePlayers[self.activePlayerID + IncVal]
+            self.psBox.pos = active.getPosition() - vector(0,6,0)
+            self.activePlayerID = active.getID()
+            self.scene.center = self.psBox.pos
+            return active
+
+    def scene(self, scene):
+        self.scene = scene
+
+    def unpause(self):
+        self.psBox.length  = 0
+        self.psBox.width   = 0
+        self.psBox.height  = 0
+        self.psBox.visble = False
+        del self.psBox
+
+    def createPlayer_Click(self, position, envObj):
+
+        newPlayerPosition   = vector()
+        newPlayerPosition   = position
+
+        if newPlayerPosition.x < -50:
+            newPlayerPosition.x = -50
+        if newPlayerPosition.x > 50:
+            newPlayerPosition.x = 50
+
+        if newPlayerPosition.z < -19:
+            newPlayerPosition.z = -19
+        if newPlayerPosition.z > 19:
+            newPlayerPosition.z = 19
+
+        newPlayer = self.createPlayer( newPlayerPosition )
+        self.buildPlayers(sphere(radius = 2, color = color.red ), vector(0,-6,0), materials.wood, newPlayer.getID() )
+        newPlayer.updatePosition()
+        newPlayer.setAcceleration(vector(0,-9.81,0))
+        envObj.addForce('floor', newPlayer.getID())
+
+
+        id = newPlayer.getID()      ## Use PlayerID to generate a new color
+        colorID = id  - 3              ## StartGenerating colors from ID 1
+
+        newColor   =  [int(x) for x in bin(colorID)[2:]]
+
+        if( len(newColor) <= 3):
+            while len(newColor) < 3:
+                newColor.append(0)
+
+        print(newColor)
+        newPlayer.mass = 80
+
+

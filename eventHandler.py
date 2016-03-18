@@ -2,160 +2,169 @@ from visual import*
 from player import*
 class eventHandler:
 
-    def __init__(m_ , envObj):
-        m_.env          =  envObj
-        m_.activePlayer = envObj.p1
-        m_.env.scene1.bind('keydown', m_.handleKeyDown )
-        m_.env.scene1.bind('keyup'  , m_.handleKeyUp   )
-        m_.env.scene1.bind('click'  , m_.handleClick   )
+    def __init__(self , envObj):
+        self.env          =  envObj
+        self.playerManager = envObj.playerMgr
+        self.activePlayer = self.playerManager.getActivePlayer()
+        self.mode         = 0
 
-    def handleKeyDown(m_, evt ):
+        self.env.scene1.bind('keydown', self.handleKeyDown )
+        self.env.scene1.bind('keyup'  , self.handleKeyUp   )
+        self.env.scene1.bind('click'  , self.handleClick   )
+
+    def handleKeyDown(self, evt ):
         if evt.key == 'left':
-            m_.leftKeyDown()
+            self.leftKeyDown()
 
         if evt.key == 'right':
-            m_.rightKeyDown()        
+            self.rightKeyDown()
 
         if evt.key == 'up':
-            m_.upKeyDown()
+            self.upKeyDown()
 
         if evt.key == 'down':
-            m_.downKeyDown()
+            self.downKeyDown()
 
         if evt.key == " ":
-            m_.spaceKeyDown()
-            
+            self.spaceKeyDown()
+
         if evt.key == 's':
-            m_.sKeyDown()
+            self.sKeyDown()
 
         if evt.key == 'f':
-            m_.fKeyDown()
+            self.fKeyDown()
 
         if evt.key == 'r':
-            m_.rKeyDown()
+            self.rKeyDown()
 
         if evt.key == 'p':
-            m_.pKeyDown()
+            self.pKeyDown()
 
         if evt.key == '1':
-            m_.oneKeyDown()
+            self.oneKeyDown()
 
         if evt.key == '2':
-            m_.twoKeyDown()
+            self.twoKeyDown()
 
         if evt.key == '3':
-            m_.threeKeyDown()
+            self.threeKeyDown()
 
         if evt.key == 'f1':
-            m_.f1KeyDown()
+            self.f1KeyDown()
 
-    def leftKeyDown(m_):
-        initialSpeed = m_.activePlayer.getSpeed()
-        finalSpeed   = mag(m_.activePlayer.getVelocity() + vector(-2,0,0))
-        if (m_.activePlayer.position.y == 0 and m_.env.notPaused and
-        (m_.activePlayer.getSpeed() < m_.activePlayer.maxSpeed or finalSpeed < initialSpeed)):
-            m_.activePlayer.changeVelocity( (-2,0,0 ) )
-        elif m_.activePlayer.getID() > 1  and (m_.env.notPaused == False):
-            m_.leftKeyDown_Paused()
+    def leftKeyDown(self):
 
-    def rightKeyDown(m_):
-        initialSpeed = m_.activePlayer.getSpeed()
-        finalSpeed   =  mag(m_.activePlayer.getVelocity() + vector(2,0,0))
-        if (m_.activePlayer.position.y == 0 and m_.env.notPaused and
-        (m_.activePlayer.getSpeed() < m_.activePlayer.maxSpeed or finalSpeed < initialSpeed)):
-          m_.activePlayer.changeVelocity( (2,0,0 ) )
-        elif m_.activePlayer.getID() < len(m_.env.activePlayers) and (m_.env.notPaused == False):
-            m_.rightKeyDown_Paused()
+        if self.mode == 1:
+            self.activePlayer = self.playerManager.changePlayer(-1)
+            return
 
-    def upKeyDown(m_):
-        initialSpeed = m_.activePlayer.getSpeed()
-        finalSpeed   = mag(m_.activePlayer.getVelocity() + vector(0,0,-2))
-        if (m_.activePlayer.position.y == 0 and
-        (m_.activePlayer.getSpeed() < m_.activePlayer.maxSpeed or finalSpeed < initialSpeed)):
-            m_.activePlayer.changeVelocity( (0,0,-2 ) )
+        initialSpeed = self.activePlayer.getSpeed()
+        finalSpeed   = mag(self.activePlayer.getVelocity() + vector(-2,0,0))
+        if (self.activePlayer.position.y == 0 and self.env.notPaused and
+        (self.activePlayer.getSpeed() < self.activePlayer.maxSpeed or finalSpeed < initialSpeed)):
+            self.activePlayer.changeVelocity( (-2,0,0 ) )
 
-    def downKeyDown(m_):
-        initialSpeed = m_.activePlayer.getSpeed()
-        finalSpeed   = mag(m_.activePlayer.getVelocity() + vector(0,0,2))
-        if (m_.activePlayer.position.y == 0  and
-        (m_.activePlayer.getSpeed() < m_.activePlayer.maxSpeed or finalSpeed < initialSpeed)):
-            m_.activePlayer.changeVelocity( (0,0,2 ) )
 
-    def spaceKeyDown(m_):
-        if m_.activePlayer.position.y == 0:
-            m_.activePlayer.chargeJump()
+    def rightKeyDown(self):
 
-    def fKeyDown(m_):
-        if 'friction' in m_.env.activeForcesList:
-            m_.env.activeForcesList.remove('friction')
-            del m_.env.activeForcesDict['friction']
+        if self.mode == 1:
+            self.activePlayer = self.playerManager.changePlayer(1)
+            return
+
+        initialSpeed = self.activePlayer.getSpeed()
+        finalSpeed   =  mag(self.activePlayer.getVelocity() + vector(2,0,0))
+        if (self.activePlayer.position.y == 0 and self.env.notPaused and
+        (self.activePlayer.getSpeed() < self.activePlayer.maxSpeed or finalSpeed < initialSpeed)):
+          self.activePlayer.changeVelocity( (2,0,0 ) )
+
+
+
+    def upKeyDown(self):
+
+        if self.mode == 1:
+            return
+
+        initialSpeed = self.activePlayer.getSpeed()
+        finalSpeed   = mag(self.activePlayer.getVelocity() + vector(0,0,-2))
+        if (self.activePlayer.position.y == 0 and
+        (self.activePlayer.getSpeed() < self.activePlayer.maxSpeed or finalSpeed < initialSpeed)):
+            self.activePlayer.changeVelocity( (0,0,-2 ) )
+
+    def downKeyDown(self):
+
+        if self.mode == 1:
+            return
+
+        initialSpeed = self.activePlayer.getSpeed()
+        finalSpeed   = mag(self.activePlayer.getVelocity() + vector(0,0,2))
+        if (self.activePlayer.position.y == 0  and
+        (self.activePlayer.getSpeed() < self.activePlayer.maxSpeed or finalSpeed < initialSpeed)):
+            self.activePlayer.changeVelocity( (0,0,2 ) )
+
+    def spaceKeyDown(self):
+        if self.activePlayer.position.y == 0:
+            self.activePlayer.chargeJump()
+
+    def fKeyDown(self):
+        if 'friction' in self.env.activeForcesList:
+            self.env.activeForcesList.remove('friction')
+            del self.env.activeForcesDict['friction']
         else:
-            m_.env.activeForcesList.append('friction')
-            m_.env.activeForcesDict.update({'friction':m_.activePlayer.id})
+            self.env.activeForcesList.append('friction')
+            self.env.activeForcesDict.update({'friction':self.activePlayer.id})
             print('turning Friction On')
 
-        print(m_.env.activeForcesDict)
-        
-    def sKeyDown(m_):
-#        if m_.activePlayer.position.y == 0:
-            m_.activePlayer.setVelocity(vector(0,0,0))
+        print(self.env.activeForcesDict)
 
-    def rKeyDown(m_):
-##       if m_.activePlayer.position.y == 0:
-            m_.activePlayer.setPosition(vector(-5,0,0))
+    def sKeyDown(self):
+#        if self.activePlayer.position.y == 0:
+            self.activePlayer.setVelocity(vector(0,0,0))
 
-    def pKeyDown(m_):
-        m_.activePlayer.printStats()
+    def rKeyDown(self):
+##       if self.activePlayer.position.y == 0:
+            self.activePlayer.setPosition(vector(-5,0,0))
 
-    def oneKeyDown(m_):
-        m_.activePlayer = m_.env.p1
+    def pKeyDown(self):
+        self.activePlayer.printStats()
 
-    def twoKeyDown(m_):
-        m_.activePlayer = m_.env.p2
+    def oneKeyDown(self):
+        self.activePlayer = self.env.p1
+
+    def twoKeyDown(self):
+        self.activePlayer = self.env.p2
         print('Player 2 is active')
 
-    def threeKeyDown(m_):
-        m_.activePlayer = m_.env.p3
+    def threeKeyDown(self):
+        self.activePlayer = self.env.p3
         print('Player 3 is active')
 
 
-    def f1KeyDown(m_):
+    def f1KeyDown(self):
+        self.env.notPaused = not(self.env.notPaused)
+        self.mode = not(self.mode)
+        self.env.pauseCount = 0
+        if self.env.notPaused == True:
+            self.playerManager.unpause()
 
-        m_.env.pauseCount = 0
-        if m_.env.notPaused:                    ## Meaning its paused
 
-            m_.env.notPaused = False
-            m_.psBox = box(pos = m_.activePlayer.getPosition(),length = 6, height = 6, width = 6)
-            m_.psBox.pos.y = -6
-            m_.psBox.opacity = .1
-            m_.psBox.color = color.red
-            m_.env.playerSelect(m_.activePlayer, m_.psBox)
-        else:
 
-            m_.env.notPaused = True
-            m_.psBox.length  = 0
-            m_.psBox.width   = 0
-            m_.psBox.height  = 0
-            m_.psBox.visble = False
-            del m_.psBox
+    def leftKeyDown_Paused(self):
+            id = self.activePlayer.getID()
+            self.activePlayer = self.env.activePlayers[ id - 2]
+            print('new active player: ', self.activePlayer.getID())
+            self.env.playerSelect(self.activePlayer, self.psBox)
 
-    def leftKeyDown_Paused(m_):
-            id = m_.activePlayer.getID()
-            m_.activePlayer = m_.env.activePlayers[ id - 2]
-            print('new active player: ', m_.activePlayer.getID())
-            m_.env.playerSelect(m_.activePlayer, m_.psBox)
-
-    def rightKeyDown_Paused(m_):
-            id = m_.activePlayer.getID()
-            m_.activePlayer = m_.env.activePlayers[ id ]
-            print('new active player: ', m_.activePlayer.getID())
-            m_.env.playerSelect(m_.activePlayer, m_.psBox)
+    def rightKeyDown_Paused(self):
+            id = self.activePlayer.getID()
+            self.activePlayer = self.env.activePlayers[ id ]
+            print('new active player: ', self.activePlayer.getID())
+            self.env.playerSelect(self.activePlayer, self.psBox)
 ## Key Up Functions ##
-        
-    def handleKeyUp(m_, evt ):
+
+    def handleKeyUp(self, evt ):
 
         if evt.key == " ":
-            m_.spaceKeyUp()
+            self.spaceKeyUp()
 
     def spaceKeyUp(m_):
         if m_.activePlayer.position.y == 0:
@@ -164,9 +173,9 @@ class eventHandler:
             m_.env.activeForcesList.append('floor')
             m_.env.activeForcesDict.update({'floor':m_.activePlayer.id})
         
-    def handleClick(m_,evt):
+    def handleClick(self,evt):
         print ('click @', evt.pos)
-        m_.env.createPlayer(evt.pos)
+        self.playerManager.createPlayer_Click(evt.pos, self.env)
 
 
            

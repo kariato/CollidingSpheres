@@ -21,7 +21,7 @@ class particle:
         m_.netForce     = vector(0,0,0)
         m_.energy       = 0
  
-        m_.body         = vector(0,0,0)                    ## any simple shape
+        m_.body         = sphere(pos=vector(0,0,0), radius = 0)                ## any simple shape
 
     def getPosition(m_):
         return m_.position
