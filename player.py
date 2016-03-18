@@ -63,8 +63,22 @@ class player(particle):
         return m_.velocity.mag
 
     def walk(m_):
-        dv = vector(randint(-1,1), 0, randint(-1,1))
+        dv = vector(randint(-3,3), 0, randint(-3,3))
         m_.changeVelocity(dv)
+
+    def jump(m_):
+        jumpCharge = vector(0,randint(5,15),0)
+        jumpWindow_lower = 55
+        jumpWindow_upper = 65
+        jump       = randint(0,100)
+
+        if jumpWindow_lower < jump and jump < jumpWindow_upper:
+            m_.jumpCharge = jumpCharge
+            return jumpCharge.y
+        else:
+            return 0
+
+
 
 
 

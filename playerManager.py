@@ -10,6 +10,7 @@ class playerManager:
         self.playerCount = 0
         self.activePlayerID = 0
         self.nonZero_FNet_ID = list()
+        self.listOfWalkers = list()
 
 
 
@@ -169,15 +170,19 @@ class playerManager:
             p.removeForce(forceName)
             self.nonZero_FNet_ID.remove(p.getID())
 
-    def jump(self, envObj):
+    def jump(self, envObj, active = 'none'):
 
-        active = self.activePlayers[self.activePlayerID]
+
+        if active == 'none':
+            active = self.activePlayers[self.activePlayerID]
         id = active.getID()
 
-        print(id, ' is jumping ')
         if active.position.y == 0:
             active.changeVelocity(active.jumpCharge)
             active.setAcceleration(vector(0,-9.81,0))
             envObj.activeForcesList.append('floor')
             envObj.activeForcesDict.update({'floor':id})
             self.setForce(id,'floor')
+
+    def setAsWalker(self, player):
+        self.listOfWalkers.append(player)

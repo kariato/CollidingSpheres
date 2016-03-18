@@ -36,13 +36,19 @@ class enviornment:
         m_.scene1.title = 'SphereLand Lab Frame'
         m_.scene1.range = (30,10,5)
         m_.playerMgr.scene( m_.scene1)
-        m_.uFric = .02
+        m_.uFric = .05
 
-        m_.Walker = m_.playerMgr.createPlayer(vector(-10, 0,  0))
-        m_.playerMgr.createPlayer(vector(5, 0,  0))
-        m_.playerMgr.createPlayer(vector(5, 0,  5))
-
+        m_.Walker0 = m_.playerMgr.createPlayer(vector(-10, 0,  0))
+        m_.Walker1 = m_.playerMgr.createPlayer(vector(5, 0,  0))
+        m_.Walker2 = m_.playerMgr.createPlayer(vector(5, 0,  5))
         m_.playerMgr.setPlayerBottom(-8)
+
+
+        m_.playerMgr.setAsWalker(m_.Walker0)
+        m_.playerMgr.setAsWalker(m_.Walker1)
+        m_.playerMgr.setAsWalker(m_.Walker2)
+
+
 
 
 ## Other Player Attributes
@@ -64,7 +70,7 @@ class enviornment:
 
         m_.collisionTest1 = collisionMonitor( m_.playerMgr.activePlayers )
 
-        m_.randomWalk = randomWalk(1,m_.Walker,.5)
+        m_.randomWalk = randomWalk(1,m_, m_.playerMgr,.5)
 
     def run(m_):
 
@@ -124,18 +130,22 @@ class enviornment:
         m_.activeForcesDict.update({newForce: newPlayerID})
 
 class randomWalk (threading.Thread):
-    def __init__(self, threadID, walkerName ,sleep):
+    def __init__(self, threadID, envObj, manager, sleep):
         threading.Thread.__init__(self)
         self.threadID = threadID
         self.SLEEP = sleep
-        self.walker = walkerName
+        self.manager = manager
+        self.envObj = envObj
 
     def run(self):
         while true:
-            self.walker.walk()
+            for walker in self.manager.listOfWalkers:
+                walker.walk()
+                y = walker.jump()
+                if y != 0:
+                    print(walker.getID(), ' is jumping :', y)
+                    self.manager.jump(self.envObj, walker)
             time.sleep(self.SLEEP)
-
-
 
 
 ############################### Main Program #############################################
