@@ -60,3 +60,4 @@ class player(particle):
 
     def getSpeed(m_):
         return m_.velocity.mag
+

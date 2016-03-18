@@ -9,6 +9,8 @@ class playerManager:
         self.activePlayers = list()
         self.playerCount = 0
         self.activePlayerID = 0
+        self.nonZero_FNet_ID = list()
+
 
 
     def createPlayer(self, position = vector):
@@ -133,5 +135,36 @@ class playerManager:
 
         print(newColor)
         newPlayer.mass = 80
+        envObj.activeForcesList.append('floor')
+        envObj.activeForcesDict.update({'floor':newPlayer.getID()})
+        self.setForce(newPlayer.getID(),'floor')
 
 
+
+    def applyForces(self,env):
+        if len(self.nonZero_FNet_ID) != 0:    ##Call all active Forces
+            for index in self.nonZero_FNet_ID:
+                playerForceList = self.activePlayers[index].getForcesList()
+                for force in playerForceList:
+                    env.forceFuncDict[force](self.activePlayers[index])
+
+
+    def setForce(self, playerID, forceName):
+        if playerID == -1:
+            for p in self.activePlayers:
+                p.addForce(forceName)
+                self.nonZero_FNet_ID.append( p.getID() )
+        else:
+            p = self.activePlayers[playerID]
+            p.addForce(forceName)
+            self.nonZero_FNet_ID.append(p.getID())
+
+    def unsetForce(self, playerID, forceName):
+        if playerID == -1:
+            for p in self.activePlayers:
+                p.removeForce(forceName)
+                self.nonZero_FNet_ID.remove( p.getID() )
+        else:
+            p = self.activePlayers[playerID]
+            p.removeForce(forceName)
+            self.nonZero_FNet_ID.remove(p.getID())

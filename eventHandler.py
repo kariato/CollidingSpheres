@@ -109,9 +109,13 @@ class eventHandler:
         if 'friction' in self.env.activeForcesList:
             self.env.activeForcesList.remove('friction')
             del self.env.activeForcesDict['friction']
+            self.playerManager.unsetForce(-1,'friction')
+            print('turning Friction off')
+
         else:
             self.env.activeForcesList.append('friction')
             self.env.activeForcesDict.update({'friction':self.activePlayer.id})
+            self.playerManager.setForce(-1,'friction')
             print('turning Friction On')
 
         print(self.env.activeForcesDict)
@@ -166,13 +170,15 @@ class eventHandler:
         if evt.key == " ":
             self.spaceKeyUp()
 
-    def spaceKeyUp(m_):
-        if m_.activePlayer.position.y == 0:
-            m_.activePlayer.changeVelocity(m_.activePlayer.jumpCharge)
-            m_.activePlayer.setAcceleration(vector(0,-9.81,0))
-            m_.env.activeForcesList.append('floor')
-            m_.env.activeForcesDict.update({'floor':m_.activePlayer.id})
-        
+    def spaceKeyUp(self):
+        if self.activePlayer.position.y == 0:
+            self.activePlayer.changeVelocity(self.activePlayer.jumpCharge)
+            self.activePlayer.setAcceleration(vector(0,-9.81,0))
+            self.env.activeForcesList.append('floor')
+            self.env.activeForcesDict.update({'floor':self.activePlayer.id})
+            self.playerManager.setForce(self.activePlayer.getID(),'floor')
+
+
     def handleClick(self,evt):
         print ('click @', evt.pos)
         self.playerManager.createPlayer_Click(evt.pos, self.env)

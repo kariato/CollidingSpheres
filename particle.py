@@ -20,6 +20,7 @@ class particle:
         m_.momentum     = vector(0,0,0)
         m_.netForce     = vector(0,0,0)
         m_.energy       = 0
+        m_.forcesList = list()
  
         m_.body         = sphere(pos=vector(0,0,0), radius = 0)                ## any simple shape
 
@@ -87,3 +88,11 @@ class particle:
     def getAge(m_):
         return m_.time
 
+    def addForce(m_, forceName):
+        m_.forcesList.append(forceName)
+
+    def removeForce(m_, forceName):
+        m_.forcesList.remove(forceName)
+
+    def getForcesList(m_):
+        return m_.forcesList

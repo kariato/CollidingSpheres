@@ -23,6 +23,8 @@ class enviornment:
         m_.pauseCount = 0
         m_.activeForcesDict    = dict()
         m_.activeForcesList    = list()
+        m_.forceFuncDict       = {'floor':m_.floor, 'friction':m_.friction}
+
         m_.centerOfMass        = vector()
         m_.playerMgr           = playerManager()
 
@@ -66,13 +68,8 @@ class enviornment:
             rate(m_.rate)
             while m_.notPaused:
                 rate(m_.rate)
-
                 m_.playerMgr.updatePlayers()
-
-                if len(m_.activeForcesList) != 0:    ##Call all active Forces
-                     for f in range (0, len(m_.activeForcesList)):
-                         getattr(m_, m_.activeForcesList[f])()
-
+                m_.playerMgr.applyForces(m_)
                 m_.collisionTest1.check()
                 m_.walls()
 
@@ -83,14 +80,9 @@ class enviornment:
                 m_.pauseCount = 1
                 m_.playerMgr.playerSelect()
 
+    def floor(m_, player):
 
-
-    def floor(m_):
-
-
-        if 'floor' in m_.activeForcesList:
-            for player in m_.playerMgr.activePlayers :
-                if player.id == m_.activeForcesDict['floor']:
+                if 'floor' in m_.activeForcesList:
                     if player.getPosition().y < .05:
                         player.velocity.y = 0
                         player.setAcceleration( vector(0,0,0) )
@@ -98,17 +90,19 @@ class enviornment:
                         player.jumpCharge = vector(0,1,0)
                         m_.activeForcesList.remove('floor')
                         del m_.activeForcesDict['floor']
+                        m_.playerMgr.unsetForce(player.getID(),'floor')
                         return
 
-    def friction(m_):
-        for player in m_.playerMgr.activePlayers:
-            if player.position.y == 0:            ## Only frictino on floor
-                player.velocity.x -=  (m_.globalDt * m_.uFric * player.velocity.norm().x)
-                if mag(vector(player.velocity.x, 0, 0)) < player.restThreshold:
-                    player.velocity.x = 0
-                player.velocity.z -=  (m_.globalDt * m_.uFric * player.velocity.norm().z)
-                if mag(vector(player.velocity.z, 0, 0)) < player.restThreshold:
-                    player.velocity.z = 0
+    def friction(m_, player):
+
+
+        if player.position.y == 0:            ## Only frictino on floor
+            player.velocity.x -=  (m_.globalDt * m_.uFric * player.velocity.norm().x)
+            if mag(vector(player.velocity.x, 0, 0)) < player.restThreshold:
+                player.velocity.x = 0
+            player.velocity.z -=  (m_.globalDt * m_.uFric * player.velocity.norm().z)
+            if mag(vector(player.velocity.z, 0, 0)) < player.restThreshold:
+                player.velocity.z = 0
 
     def walls(m_):
         for player in m_.playerMgr.activePlayers:
