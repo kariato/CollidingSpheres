@@ -89,13 +89,12 @@ class enviornment:
                         player.position.y = 0
                         player.jumpCharge = vector(0,1,0)
                         m_.activeForcesList.remove('floor')
-                        del m_.activeForcesDict['floor']
+
+#                        del m_.activeForcesDict['floor']
                         m_.playerMgr.unsetForce(player.getID(),'floor')
                         return
 
     def friction(m_, player):
-
-
         if player.position.y == 0:            ## Only frictino on floor
             player.velocity.x -=  (m_.globalDt * m_.uFric * player.velocity.norm().x)
             if mag(vector(player.velocity.x, 0, 0)) < player.restThreshold:
