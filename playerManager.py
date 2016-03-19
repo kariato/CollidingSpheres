@@ -151,15 +151,12 @@ class playerManager:
         envObj.activeForcesDict.update({'floor':newPlayer.getID()})
         self.setForce(newPlayer.getID(),'floor')
 
-
-
     def applyForces(self,env):
         if len(self.nonZero_FNet_ID) != 0:    ##Call all active Forces
             for index in self.nonZero_FNet_ID:
                 playerForceList = self.activePlayers[index].getForcesList()
                 for force in playerForceList:
                     env.forceFuncDict[force](self.activePlayers[index])
-
 
     def setForce(self, playerID, forceName):
         if playerID == -1:

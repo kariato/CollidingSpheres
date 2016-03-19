@@ -1,5 +1,7 @@
 from player import *
 from fullANN import *
+import threading
+import time
 
 class smartPlayer (player):
 
@@ -27,3 +29,16 @@ class smartPlayer (player):
         output = self.brain.feed_forward([x, y])
         return output
 
+
+    class brainEgnine (threading.Thread):
+        def __init__(self, threadID, envObj, manager, sleep):
+            threading.Thread.__init__(self)
+            self.threadID = threadID
+            self.SLEEP = sleep
+            self.manager = manager
+            self.envObj = envObj
+
+
+        def run(self):
+            while true:
+                time.sleep(self.SLEEP)

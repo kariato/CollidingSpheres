@@ -152,6 +152,8 @@ class randomWalk (threading.Thread):
             time.sleep(self.SLEEP)
 
 
+
+
 ############################### Main Program #############################################
 env1 = enviornment()
 env1.handler = eventHandler(env1)
