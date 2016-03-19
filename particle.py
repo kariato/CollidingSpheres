@@ -96,3 +96,27 @@ class particle:
 
     def getForcesList(self):
         return self.forcesList
+
+    def moveRight(self):
+        initialSpeed = self.getVelocity().x
+        finalSpeed   =  self.getVelocity().x + 2
+        if self.position.y == 0 and (self.getVelocity().x < self.maxSpeed or finalSpeed < initialSpeed):
+            self.changeVelocity( (2,0,0 ) )
+
+    def moveLeft(self):
+        initialSpeed = self.getVelocity().x
+        finalSpeed   =  self.getVelocity().x + -2
+        if self.position.y == 0 and (self.getVelocity().x > -self.maxSpeed or finalSpeed > initialSpeed):
+            self.changeVelocity( (-2,0,0 ) )
+
+    def moveUp(self):
+        initialSpeed = self.getVelocity().z
+        finalSpeed   =  self.getVelocity().z + -2
+        if self.position.y == 0 and (self.getVelocity().z > -self.maxSpeed or finalSpeed > initialSpeed):
+            self.changeVelocity( (0,0,-2 ) )
+
+    def moveDown(self):
+        initialSpeed = self.getVelocity().z
+        finalSpeed   =  self.getVelocity().z + 2
+        if self.position.y == 0 and (self.getVelocity().z < self.maxSpeed or finalSpeed < initialSpeed):
+            self.changeVelocity( (0,0,2 ) )

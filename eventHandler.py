@@ -57,49 +57,30 @@ class eventHandler:
         if self.mode == 1:
             self.activePlayer = self.playerManager.changePlayer(-1)
             return
-
-        initialSpeed = self.activePlayer.getSpeed()
-        finalSpeed   = mag(self.activePlayer.getVelocity() + vector(-2,0,0))
-        if (self.activePlayer.position.y == 0 and self.env.notPaused and
-        (self.activePlayer.getSpeed() < self.activePlayer.maxSpeed or finalSpeed < initialSpeed)):
-            self.activePlayer.changeVelocity( (-2,0,0 ) )
-
+        else:
+            self.activePlayer.moveLeft()
 
     def rightKeyDown(self):
 
         if self.mode == 1:
             self.activePlayer = self.playerManager.changePlayer(1)
             return
-
-        initialSpeed = self.activePlayer.getSpeed()
-        finalSpeed   =  mag(self.activePlayer.getVelocity() + vector(2,0,0))
-        if (self.activePlayer.position.y == 0 and self.env.notPaused and
-        (self.activePlayer.getSpeed() < self.activePlayer.maxSpeed or finalSpeed < initialSpeed)):
-          self.activePlayer.changeVelocity( (2,0,0 ) )
-
-
+        else:
+            self.activePlayer.moveRight()
 
     def upKeyDown(self):
 
         if self.mode == 1:
             return
-
-        initialSpeed = self.activePlayer.getSpeed()
-        finalSpeed   = mag(self.activePlayer.getVelocity() + vector(0,0,-2))
-        if (self.activePlayer.position.y == 0 and
-        (self.activePlayer.getSpeed() < self.activePlayer.maxSpeed or finalSpeed < initialSpeed)):
-            self.activePlayer.changeVelocity( (0,0,-2 ) )
+        else:
+            self.activePlayer.moveUp()
 
     def downKeyDown(self):
 
         if self.mode == 1:
             return
-
-        initialSpeed = self.activePlayer.getSpeed()
-        finalSpeed   = mag(self.activePlayer.getVelocity() + vector(0,0,2))
-        if (self.activePlayer.position.y == 0  and
-        (self.activePlayer.getSpeed() < self.activePlayer.maxSpeed or finalSpeed < initialSpeed)):
-            self.activePlayer.changeVelocity( (0,0,2 ) )
+        else:
+            self.activePlayer.moveDown()
 
     def spaceKeyDown(self):
 
