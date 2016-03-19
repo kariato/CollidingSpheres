@@ -9,6 +9,7 @@ from math import *
 from CourseObjects import *
 from fancyBalls import *
 from playerManager import*
+from smartPlayer import *
 import threading
 import time
 
@@ -41,20 +42,23 @@ class enviornment:
         self.Walker0 = self.playerMgr.createPlayer(vector(-10, 0,  0))
         self.Walker1 = self.playerMgr.createPlayer(vector(5, 0,  0))
         self.Walker2 = self.playerMgr.createPlayer(vector(5, 0,  5))
+        self.SmartyPants = self.playerMgr.creatSmartPlayer(vector(10, 0,0))
+
         self.playerMgr.setPlayerBottom(-8)
 
 
         self.playerMgr.setAsWalker(self.Walker0)
         self.playerMgr.setAsWalker(self.Walker1)
         self.playerMgr.setAsWalker(self.Walker2)
-
+        self.SmartyPants.train()
 
 
 
 ## Other Player Attributes
-        self.playerMgr.buildPlayers(sphere(radius = 2, color = (.996,.616,.016) ), vector(0,-6,0), materials.wood, 0)
+        self.playerMgr.buildPlayers(sphere(radius = 2, color = color.cyan  ), vector(0,-6,0), materials.wood, 0)
         self.playerMgr.buildPlayers(sphere(radius = 2, color = color.blue ), vector(0,-6,0), materials.wood, 1)
         self.playerMgr.buildPlayers(sphere(radius = 2, color = color.green ), vector(0,-6,0), materials.wood, 2)
+        self.playerMgr.buildPlayers(sphere(radius = 2, color = (.996,.616,.016)), vector(0,-6, 0), materials.wood, 3)
         self.playerMgr.setPlayerMass(20)
 
 
