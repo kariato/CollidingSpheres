@@ -9,6 +9,7 @@ class player(particle):
 
         self.dt = .05
         particle.__init__(self, position, id )
+        self.type = 'player'
         self.playerComponents = []
         self.jumpCharge   = vector(0, 1,  0)
         self.jumpStrength = vector(0, 10, 0)
@@ -61,6 +62,9 @@ class player(particle):
 
     def getSpeed(self):
         return self.velocity.mag
+
+    def getType(self):
+        return self.type
 
     def walk(self):
         dv = randint(0, 3)

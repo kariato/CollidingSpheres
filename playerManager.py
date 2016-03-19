@@ -194,3 +194,11 @@ class playerManager:
 
     def setAsWalker(self, player):
         self.listOfWalkers.append(player)
+
+    def setTarget( self, targetPosition ):
+
+        targetPosition.y = 0
+        for player in self.activePlayers:
+            if player.getType() == 'smartPlayer':
+                player.setTarget(targetPosition)
+                player.chase()

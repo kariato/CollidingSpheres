@@ -4,9 +4,10 @@ import threading
 import time
 
 class smartPlayer (player):
-
     def __init__(self, position, id):
         player.__init__(self, position, id)
+        self.type = 'smartPlayer'
+        self.target = vector(0,0)
 
         self.training_sets = [
             [[0, 1], [.125]],
@@ -25,10 +26,47 @@ class smartPlayer (player):
         print(i, self.brain.calculate_total_error(self.training_sets))
 
 
-    def chase(self, x, y):
-        output = self.brain.feed_forward([x, y])
-        return output
+    def chase(self):
 
+        position_2D = vector(self.position.x, self.position.y)
+        input = self.target - position_2D
+        inputNorm = norm(input)
+        inputX = inputNorm.x
+        inputY = inputNorm.y
+
+        input = [inputX, inputY]
+        output = self.brain.feed_forward(input)
+        self.calculateResponse(output)
+
+
+    def setTarget(self, newTargetPosition):
+
+        x = newTargetPosition[0]
+        y = newTargetPosition[2]
+        self.target = vector(x,y)
+        print('New target set at ', self.target, ' for player ', self.id)
+
+    def calculateResponse(self, outputRaw):
+
+        print('outputRaw= ', outputRaw)
+        output = outputRaw[0]
+        if output > 0 and output < .25:
+            self.moveUp()
+            response = 'Up'
+        elif output > .25 and output < .5:
+            self.moveDown()
+            response ='Down'
+        elif output > .5 and output < .75:
+            self.moveRight()
+            response = 'Right'
+        elif output > .75:
+            self.moveLeft()
+            response = 'Left'
+
+        print('responding to target', self.target , 'with: ' + response , ' val= : ', output)
+
+    def getType(self):
+        return self.type
 
     class brainEgnine (threading.Thread):
         def __init__(self, threadID, envObj, manager, sleep):

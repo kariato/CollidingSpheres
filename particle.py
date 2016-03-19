@@ -5,7 +5,7 @@ class particle:
     
     def __init__(self, position ,id):
         self.id           = id
-
+        self.type         = 'particle'
         self.time         = 0 
         self.dt           = .01
         self.mass         = 0
@@ -102,6 +102,9 @@ class particle:
         finalSpeed   =  self.getVelocity().x + 2
         if self.position.y == 0 and (self.getVelocity().x < self.maxSpeed or finalSpeed < initialSpeed):
             self.changeVelocity( (2,0,0 ) )
+
+    def getType(self):
+        return self.type
 
     def moveLeft(self):
         initialSpeed = self.getVelocity().x

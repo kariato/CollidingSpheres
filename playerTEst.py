@@ -78,7 +78,7 @@ class enviornment:
 
     def run(self):
 
-        self.randomWalk.start()
+        #self.randomWalk.start()
         while True:
             rate(self.rate)
             while self.notPaused:
@@ -147,7 +147,7 @@ class randomWalk (threading.Thread):
                 walker.walk()
                 y = walker.jump()
                 if y != 0:
-                    print(walker.getID(), ' is jumping :', y)
+#                    print(walker.getID(), ' is jumping :', y)
                     self.manager.jump(self.envObj, walker)
             time.sleep(self.SLEEP)
 

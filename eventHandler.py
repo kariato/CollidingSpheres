@@ -52,6 +52,9 @@ class eventHandler:
         if evt.key == 'f1':
             self.f1KeyDown()
 
+        if evt.key == 't':
+            self.tKeyDown()
+
     def leftKeyDown(self):
 
         if self.mode == 1:
@@ -128,13 +131,13 @@ class eventHandler:
 
 
     def f1KeyDown(self):
-        self.env.notPaused = not(self.env.notPaused)
-        self.mode = not(self.mode)
-        self.env.pauseCount = 0
-        if self.env.notPaused == True:
-            self.playerManager.unpause()
 
-
+        if self.mode == 0 or self.mode == 1:
+            self.env.notPaused = not(self.env.notPaused)
+            self.mode = not(self.mode)
+            self.env.pauseCount = 0
+            if self.env.notPaused == True:
+                self.playerManager.unpause()
 
     def leftKeyDown_Paused(self):
             id = self.activePlayer.getID()
@@ -147,6 +150,16 @@ class eventHandler:
             self.activePlayer = self.env.activePlayers[ id ]
             print('new active player: ', self.activePlayer.getID())
             self.env.playerSelect(self.activePlayer, self.psBox)
+
+    def tKeyDown(self):
+
+            if self.mode == 2:
+                self.mode = 0
+                print('Target Mode Off')
+            elif self.mode == 0:
+                self.mode = 2
+                print('Target Mode Set')
+
 ## Key Up Functions ##
 
     def handleKeyUp(self, evt ):
@@ -159,8 +172,10 @@ class eventHandler:
 
 
     def handleClick(self,evt):
-        print ('click @', evt.pos)
-        self.playerManager.createPlayer_Click(evt.pos, self.env)
 
+        if self.mode == 0:
+            print ('click @', evt.pos)
+            self.playerManager.createPlayer_Click(evt.pos, self.env)
+        if self.mode == 2:
+            self.playerManager.setTarget(evt.pos)
 
-           
