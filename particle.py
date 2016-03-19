@@ -3,96 +3,96 @@ from visual import *
 
 class particle:
     
-    def __init__(m_, position ,id):
-        m_.id           = id
+    def __init__(self, position ,id):
+        self.id           = id
 
-        m_.time         = 0 
-        m_.dt           = .01
-        m_.mass         = 0
-        m_.dr           = vector(0,  0, 0)
+        self.time         = 0 
+        self.dt           = .01
+        self.mass         = 0
+        self.dr           = vector(0,  0, 0)
 
-        m_.position     = position             ## Location of player center
-        m_.velocity     = vector(0,0,0)
-        m_.acceleration = vector(0,0,0)
-        m_.tolerance    = .001
-        m_.restThreshold    = .001
+        self.position     = position             ## Location of player center
+        self.velocity     = vector(0,0,0)
+        self.acceleration = vector(0,0,0)
+        self.tolerance    = .001
+        self.restThreshold    = .001
 
-        m_.momentum     = vector(0,0,0)
-        m_.netForce     = vector(0,0,0)
-        m_.energy       = 0
-        m_.forcesList = list()
+        self.momentum     = vector(0,0,0)
+        self.netForce     = vector(0,0,0)
+        self.energy       = 0
+        self.forcesList = list()
  
-        m_.body         = sphere(pos=vector(0,0,0), radius = 0)                ## any simple shape
+        self.body         = sphere(pos=vector(0,0,0), radius = 0)                ## any simple shape
 
-    def getPosition(m_):
-        return m_.position
+    def getPosition(self):
+        return self.position
 
-    def updatePosition(m_):                   
-        m_.dr = m_.velocity * m_.dt
-        m_.position += m_.dr
-        m_.body.pos = m_.position   
+    def updatePosition(self):                   
+        self.dr = self.velocity * self.dt
+        self.position += self.dr
+        self.body.pos = self.position   
 
-    def changePosition(m_, dr):
-            m_.position += dr
-            m_.updatePosition()
+    def changePosition(self, dr):
+            self.position += dr
+            self.updatePosition()
             
-    def setPosition(m_, newPosition):
-        m_.position = newPosition
+    def setPosition(self, newPosition):
+        self.position = newPosition
     
-    def getVelocity(m_):       
-        return m_.velocity
+    def getVelocity(self):       
+        return self.velocity
 
-    def updateVelocity(m_):
-        m_.velocity += m_.acceleration * m_.dt
+    def updateVelocity(self):
+        self.velocity += self.acceleration * self.dt
 
-    def changeVelocity(m_, dv):
-        m_.velocity += dv
+    def changeVelocity(self, dv):
+        self.velocity += dv
 
-    def setVelocity(m_, newVelocity):
-        m_.velocity = newVelocity
+    def setVelocity(self, newVelocity):
+        self.velocity = newVelocity
 
-    def getAcceleration(m_):
-        return m_.acceleration
+    def getAcceleration(self):
+        return self.acceleration
 
-    def setAcceleration(m_, newAcceleration):
-        m_.acceleration = newAcceleration
+    def setAcceleration(self, newAcceleration):
+        self.acceleration = newAcceleration
 
-    def changeAcceleration(m_, newAcceleration):
-        m_.acceleration += newAcceleration
+    def changeAcceleration(self, newAcceleration):
+        self.acceleration += newAcceleration
 
-    def getForce(m_):
-        return m_.netForce
+    def getForce(self):
+        return self.netForce
 
-    def changeForce(m_, newForce):
-        m_.netForce += newForce
+    def changeForce(self, newForce):
+        self.netForce += newForce
 
     def setForce(_m, newForce):
-        m_.netForce = newForce
+        self.netForce = newForce
 
-    def getEnergy(m_):
-        m_.energy = .5*m_.mass*m_.velocity.mag2
-        return  m_.energy
+    def getEnergy(self):
+        self.energy = .5*self.mass*self.velocity.mag2
+        return  self.energy
 
-    def calcMomentum(m_):
-        m_.momentum = m_.mass * m_.velocity
+    def calcMomentum(self):
+        self.momentum = self.mass * self.velocity
 
-    def getMomentum(m_):
-        return m_.momentum
+    def getMomentum(self):
+        return self.momentum
 
-    def getID(m_):
-        return m_.id
+    def getID(self):
+        return self.id
 
-    def age(m_):
-        m_.time += dt
+    def age(self):
+        self.time += dt
 
-    def getAge(m_):
-        return m_.time
+    def getAge(self):
+        return self.time
 
-    def addForce(m_, forceName):
-        m_.forcesList.append(forceName)
+    def addForce(self, forceName):
+        self.forcesList.append(forceName)
 
-    def removeForce(m_, forceName):
-        m_.forcesList.remove(forceName)
+    def removeForce(self, forceName):
+        self.forcesList.remove(forceName)
 
-    def getForcesList(m_):
-        return m_.forcesList
+    def getForcesList(self):
+        return self.forcesList

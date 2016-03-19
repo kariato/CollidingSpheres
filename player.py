@@ -5,75 +5,75 @@ from random import randint
 class player(particle):
 
 
-    def __init__(m_, position = 'none', id = 'none'):
+    def __init__(self, position = 'none', id = 'none'):
 
-        m_.dt = .05
-        particle.__init__(m_, position, id )
-        m_.playerComponents = []
-        m_.jumpCharge   = vector(0, 1,  0)
-        m_.jumpStrength = vector(0, 10, 0)
-        m_.bottom = -2
-        m_.rollEnable = True
-        m_.boundaryList = []
-        m_.maxSpeed     = 15
+        self.dt = .05
+        particle.__init__(self, position, id )
+        self.playerComponents = []
+        self.jumpCharge   = vector(0, 1,  0)
+        self.jumpStrength = vector(0, 10, 0)
+        self.bottom = -2
+        self.rollEnable = True
+        self.boundaryList = []
+        self.maxSpeed     = 15
 
-    def fullRender(m_):
-        m_.dr = m_.velocity * m_.dt
-        m_.position += m_.dr
-        for component in m_.playerComponents:
-            component.pos = m_.position + component.posRel
+    def fullRender(self):
+        self.dr = self.velocity * self.dt
+        self.position += self.dr
+        for component in self.playerComponents:
+            component.pos = self.position + component.posRel
 
-    def roll(m_):
-        if m_.rollEnable :
-            dthetaX = -m_.dr.x / m_.body.radius
-            dthetaZ =  m_.dr.z / m_.body.radius
+    def roll(self):
+        if self.rollEnable :
+            dthetaX = -self.dr.x / self.body.radius
+            dthetaZ =  self.dr.z / self.body.radius
             if dthetaX != 0:
-                m_.body.rotate(axis=(0,0,1), angle = dthetaX )
+                self.body.rotate(axis=(0,0,1), angle = dthetaX )
             if dthetaZ != 0:
-                m_.body.rotate(axis=(1,0,0), angle = dthetaZ )
+                self.body.rotate(axis=(1,0,0), angle = dthetaZ )
 
-    def chargeJump(m_):
-        if m_.jumpCharge.y < 15:
-            m_.jumpCharge.y += m_.jumpStrength.y/m_.jumpCharge.y
+    def chargeJump(self):
+        if self.jumpCharge.y < 15:
+            self.jumpCharge.y += self.jumpStrength.y/self.jumpCharge.y
 
-    def addComponent(m_, shape, relativePosition = 0):
+    def addComponent(self, shape, relativePosition = 0):
         shape.posRel = relativePosition
-        m_.playerComponents.append(shape)
-        m_.body = m_.playerComponents[0]
-        m_.body.pos = m_.position + shape.posRel
+        self.playerComponents.append(shape)
+        self.body = self.playerComponents[0]
+        self.body.pos = self.position + shape.posRel
 
-    def getBottom(m_):
-        return m_.position.y + m_.bottom
-
-
-    def printStats(m_):
-        print( 'PlayerID: ' , m_.id )
-        print( ' Position', m_.getPosition() )
-        print(  'velocity', m_.getVelocity() )
-        print( 'Player Bottom', m_.getBottom() )
+    def getBottom(self):
+        return self.position.y + self.bottom
 
 
-    def setTimeResolution(m_, newDt):
-        m_.dt = newDt
+    def printStats(self):
+        print( 'PlayerID: ' , self.id )
+        print( ' Position', self.getPosition() )
+        print(  'velocity', self.getVelocity() )
+        print( 'Player Bottom', self.getBottom() )
 
-    def addBoundingSphere(m_, boundingSphere):
-        m_.boundaryList.append(boundingSphere)
 
-    def getSpeed(m_):
-        return m_.velocity.mag
+    def setTimeResolution(self, newDt):
+        self.dt = newDt
 
-    def walk(m_):
+    def addBoundingSphere(self, boundingSphere):
+        self.boundaryList.append(boundingSphere)
+
+    def getSpeed(self):
+        return self.velocity.mag
+
+    def walk(self):
         dv = vector(randint(-3,3), 0, randint(-3,3))
-        m_.changeVelocity(dv)
+        self.changeVelocity(dv)
 
-    def jump(m_):
+    def jump(self):
         jumpCharge = vector(0,randint(5,15),0)
         jumpWindow_lower = 55
         jumpWindow_upper = 65
         jump       = randint(0,100)
 
         if jumpWindow_lower < jump and jump < jumpWindow_upper:
-            m_.jumpCharge = jumpCharge
+            self.jumpCharge = jumpCharge
             return jumpCharge.y
         else:
             return 0
