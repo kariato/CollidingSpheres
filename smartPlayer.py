@@ -10,16 +10,17 @@ class smartPlayer (player):
         self.target = vector(0,0)
 
         self.training_sets = [
-            [[0, 1], [.125]],
-            [[-1, 0], [.625]],
-            [[0, -1], [.875]],
-            [[1, 0], [.375]]
+            [[0, 1], [.125]],                   #Click above
+            [[1, 0], [.375]],                    #Click right
+            [[-1, 0], [.625]],                  #Click on the left
+            [[0, -1], [.875]],                  #Click underneath
+
         ]
 
         self.brain = NeuralNetwork(len(self.training_sets[0][0]), 5, len(self.training_sets[0][1]))
 
     def train(self):
-        for i in range(10000):
+        for i in range(30000):
             training_inputs, training_outputs = random.choice(self.training_sets)
             self.brain.train(training_inputs, training_outputs)
 
@@ -35,6 +36,7 @@ class smartPlayer (player):
         inputY = inputNorm.y
 
         input = [inputX, inputY]
+        print('Normalized input: ', input)
         output = self.brain.feed_forward(input)
         self.calculateResponse(output)
 
@@ -42,8 +44,8 @@ class smartPlayer (player):
     def setTarget(self, newTargetPosition):
 
         x = newTargetPosition[0]
-        y = newTargetPosition[2]
-        self.target = vector(x,y)
+        z = newTargetPosition[2]
+        self.target = vector(x,z)
         print('New target set at ', self.target, ' for player ', self.id)
 
     def calculateResponse(self, outputRaw):
@@ -51,24 +53,27 @@ class smartPlayer (player):
         print('outputRaw= ', outputRaw)
         output = outputRaw[0]
         if output > 0 and output < .25:
-            self.moveUp()
-            response = 'Up'
-        elif output > .25 and output < .5:
             self.moveDown()
-            response ='Down'
-        elif output > .5 and output < .75:
+            response = 'Down'
+        elif output > .25 and output < .5:
             self.moveRight()
-            response = 'Right'
-        elif output > .75:
+            response ='Right'
+        elif output > .5 and output < .75:
             self.moveLeft()
             response = 'Left'
+        elif output > .75:
+            self.moveUp()
+            response = 'Up'
 
         print('responding to target', self.target , 'with: ' + response , ' val= : ', output)
 
     def getType(self):
         return self.type
 
-    class brainEgnine (threading.Thread):
+    def printStats(self):
+        self.brain.inspect()
+
+    class brainEngine (threading.Thread):
         def __init__(self, threadID, envObj, manager, sleep):
             threading.Thread.__init__(self)
             self.threadID = threadID

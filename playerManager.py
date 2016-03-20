@@ -13,15 +13,12 @@ class playerManager:
         self.nonZero_FNet_ID = list()
         self.listOfWalkers = list()
 
-
-
     def createPlayer(self, position = vector):
         newPlayer = player(position, self.playerCount)
         self.activePlayers.append(newPlayer)
         self.playerCount += 1
         if len(self.activePlayers) == 1:
             self.active = self.activePlayers[0]
-
         return newPlayer
 
     def creatSmartPlayer(self, position = vector):
@@ -31,8 +28,6 @@ class playerManager:
         if len(self.activePlayers) == 1:
             self.active = self.activePlayers[0]
         return newPlayer
-
-
 
     def setPlayerMass(self, mass, id = 'none'):
 
