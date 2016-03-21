@@ -46,7 +46,7 @@ class smartPlayer (player):
         x = newTargetPosition[0]
         z = newTargetPosition[2]
         self.target = vector(x,z)
-        print('New target set at ', self.target, ' for player ', self.id)
+        #print('New target set at ', self.target, ' for player ', self.id)
 
     def calculateResponse(self, outputRaw):
 
@@ -65,7 +65,7 @@ class smartPlayer (player):
             self.moveUp()
             response = 'Up'
 
-        print('responding to target', self.target , 'with: ' + response , ' val= : ', output)
+        #print('responding to target', self.target , 'with: ' + response , ' val= : ', output)
 
     def getType(self):
         return self.type
