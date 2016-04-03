@@ -5,6 +5,8 @@ from particle import *
 from player import *
 from smartPlayer import *
 
+
+
 class playerManager:
     def __init__(self):
         self.activePlayers = list()
@@ -12,6 +14,7 @@ class playerManager:
         self.activePlayerID = 0
         self.nonZero_FNet_ID = list()
         self.listOfWalkers = list()
+#        aabb.playerManager = self ## Register with other classes
 
     def createPlayer(self, position = vector):
         newPlayer = player(position, self.playerCount)
@@ -192,8 +195,20 @@ class playerManager:
 
     def setTarget( self, targetPosition ):
 
-        targetPosition.y = 0
+        targetPosition.y = 0                ## Project onto XZ plane
         for player in self.activePlayers:
             if player.getType() == 'smartPlayer':
                 player.setTarget(targetPosition)
                 player.chase()
+
+    def look(self, player, dt = 1):
+
+        if player.getType() == 'smartPlayer':
+            pass
+
+
+
+
+        else:
+            print('Not Smart')
+            return -1

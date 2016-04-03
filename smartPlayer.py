@@ -8,6 +8,7 @@ class smartPlayer (player):
         player.__init__(self, position, id)
         self.type = 'smartPlayer'
         self.target = vector(0,0)
+        self.scope = (5,5,5)
 
         self.training_sets = [
             [[0, 1], [.125]],                   #Click above
@@ -20,6 +21,7 @@ class smartPlayer (player):
         self.brain = NeuralNetwork(len(self.training_sets[0][0]), 5, len(self.training_sets[0][1]))
 
     def train(self):
+        i = 0
         for i in range(30000):
             training_inputs, training_outputs = random.choice(self.training_sets)
             self.brain.train(training_inputs, training_outputs)

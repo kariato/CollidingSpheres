@@ -27,17 +27,17 @@ class enviornment:
         self.activeForcesDict    = dict()
         self.activeForcesList    = list()
         self.forceFuncDict       = {'floor':self.floor, 'friction':self.friction}
+        self.uFric = .15
 
         self.centerOfMass        = vector()
         self.playerMgr           = playerManager()
-
 
         self.scene1 = display(x=0, y=0, width=1200, height = 600)
         self.scene1.autoscale = False
         self.scene1.title = 'SphereLand Lab Frame'
         self.scene1.range = (30,10,5)
         self.playerMgr.scene( self.scene1)
-        self.uFric = .15
+
 
         self.Walker0 = self.playerMgr.creatSmartPlayer(vector(-10, 0,  0))
         self.Walker1 = self.playerMgr.creatSmartPlayer(vector(5, 0,  0))
@@ -50,9 +50,9 @@ class enviornment:
         # self.playerMgr.setAsWalker(self.Walker0)
         # self.playerMgr.setAsWalker(self.Walker1)
         # self.playerMgr.setAsWalker(self.Walker2)
-        self.Walker1.train()
-        self.Walker0.train()
-        self.Walker2.train()
+        # self.Walker1.train()
+        # self.Walker0.train()
+        # self.Walker2.train()
         self.SmartyPants.train()
 
 
@@ -75,7 +75,9 @@ class enviornment:
         self.leftWall = obstacle ((-53.5, -6.75,    0) ,(0,   0, 44),2.5, 3)
         self.rightWall = obstacle((53.5,  -6.75,     0),(0,   0, 44),2.5, 3)
 
-        self.collisionTest1 = collisionMonitor( self.playerMgr.activePlayers )
+
+        self.collisionTest1 = CollisionMonitor()
+        self.ACTIVE_PLAYERS = self.collisionTest1.addSet(self.playerMgr.activePlayers)
 
         self.randomWalk = randomWalk(1,self, self.playerMgr,.5)
 
@@ -88,9 +90,8 @@ class enviornment:
                 rate(self.rate)
                 self.playerMgr.updatePlayers()
                 self.playerMgr.applyForces(self)
-                #self.collisionTest1.check()
+                self.collisionTest1.check_player_player_collision(self.ACTIVE_PLAYERS)
                 self.walls()
-
 
             if self.pauseCount == 0:
                 print('Paused')

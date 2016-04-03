@@ -8,6 +8,7 @@ class eventHandler:
         self.activePlayer = self.playerManager.getActivePlayer()
         self.mode         = 0
 
+
         self.env.scene1.bind('keydown', self.handleKeyDown )
         self.env.scene1.bind('keyup'  , self.handleKeyUp   )
         self.env.scene1.bind('click'  , self.handleClick   )
@@ -54,6 +55,9 @@ class eventHandler:
 
         if evt.key == 't':
             self.tKeyDown()
+
+        if evt.key == 'l':
+            self.playerManager.look(self.activePlayer)
 
     def leftKeyDown(self):
 
@@ -141,18 +145,17 @@ class eventHandler:
 
     def leftKeyDown_Paused(self):
             id = self.activePlayer.getID()
-            self.activePlayer = self.env.activePlayers[ id - 2]
+            self.activePlayer = self.playerManager.activePlayers[ id - 2]
             print('new active player: ', self.activePlayer.getID())
-            self.env.playerSelect(self.activePlayer, self.psBox)
+            self.playerManager.playerSelect(self.activePlayer, self.psBox)
 
     def rightKeyDown_Paused(self):
             id = self.activePlayer.getID()
-            self.activePlayer = self.env.activePlayers[ id ]
+            self.activePlayer = self.playerManager.activePlayers[ id ]
             print('new active player: ', self.activePlayer.getID())
-            self.env.playerSelect(self.activePlayer, self.psBox)
+            self.playerManager.playerSelect(self.activePlayer, self.psBox)
 
     def tKeyDown(self):
-
             if self.mode == 2:
                 self.mode = 0
                 print('Target Mode Off')
