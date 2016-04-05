@@ -58,10 +58,10 @@ class enviornment:
 
 
 ## Other Player Attributes
-        self.playerMgr.buildPlayers(sphere(radius = 2, color = color.cyan  ), vector(0,-6,0), materials.wood, 0)
-        self.playerMgr.buildPlayers(sphere(radius = 2, color = color.blue ), vector(0,-6,0), materials.wood, 1)
-        self.playerMgr.buildPlayers(sphere(radius = 2, color = color.green ), vector(0,-6,0), materials.wood, 2)
-        self.playerMgr.buildPlayers(sphere(radius = 2, color = (.996,.616,.016)), vector(0,-6, 0), materials.wood, 3)
+        self.playerMgr.buildPlayers(sphere(radius = .6, color = color.cyan  ), vector(0,-6,0), materials.wood, 0)
+        self.playerMgr.buildPlayers(sphere(radius = .6, color = color.blue ), vector(0,-6,0), materials.wood, 1)
+        self.playerMgr.buildPlayers(sphere(radius = .6, color = color.green ), vector(0,-6,0), materials.wood, 2)
+        self.playerMgr.buildPlayers(sphere(radius = .6, color = (.996,.616,.016)), vector(0,-6, 0), materials.wood, 3)
         self.playerMgr.setPlayerMass(20)
 
 

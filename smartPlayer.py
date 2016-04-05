@@ -78,7 +78,7 @@ class smartPlayer (player):
         self.brain.inspect()
 
     def look(self):
-        self.sense.look(self.position, )
+        self.sense.look(self.position )
 
 
     class brainEngine (threading.Thread):

@@ -67,6 +67,12 @@ class aabb:
         return threatCount
 
 
+    def move(self, displacement):
+        self.Upper += displacement + .5*vector(self.length, self.width, self.height)
+        self.Lower += displacement - .5*vector(self.length, self.width, self.height)
+
+
+
 # Bounding Sphere Class
 class bs:
     def __init__(self, interactingSets):
