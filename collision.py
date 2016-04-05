@@ -14,9 +14,9 @@ class aabb:
             self.id = id
         else:
             return
-        self.length = scope[0]
-        self.height  = scope[1]
-        self.width = scope[2]
+        self.length = 2*scope[0]
+        self.height  = 2*scope[1]
+        self.width = 2*scope[2]
 
         ## This part gets updated each call to look()
         self.location = vector(pos_Rel_Center)

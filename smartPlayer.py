@@ -10,7 +10,7 @@ class smartPlayer (player):
         player.__init__(self, position, id)
         self.type = 'smartPlayer'
         self.target = vector(0,0)
-        self.scope = (10,10,10)
+        self.scope = (5,5,5)
         self.sense = sense(id, position, self.scope)
         self.training_sets = [
             [[0, 1], [.125]],                   #Click above
