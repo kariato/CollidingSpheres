@@ -80,6 +80,9 @@ class smartPlayer (player):
     def look(self):
         self.sense.look(self.position )
 
+    def set_net_visibility(self, visibility):
+            self.sense.net_visible_f = visibility
+
 
     class brainEngine (threading.Thread):
         def __init__(self, threadID, envObj, manager, sleep):
@@ -93,5 +96,6 @@ class smartPlayer (player):
         def run(self):
             while true:
                 time.sleep(self.SLEEP)
+
 
 

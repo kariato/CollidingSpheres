@@ -24,7 +24,7 @@ class aabb:
         self.Lower = self.location - .5*vector(self.length, self.height, self.width)
 
     def contains_players(self, position):
-        print('Checking to see if: ', position, ' is between ', self.Upper, ' and ', self.Lower)
+        #print('Checking to see if: ', position, ' is between ', self.Upper, ' and ', self.Lower)
         Upper_x = self.Upper.x
         Upper_y = self.Upper.y
         Upper_z = self.Upper.z
@@ -54,6 +54,20 @@ class aabb:
 
         self.update_scope_boundary(new_position)
         # Do a preliminary check with a scope sized bounding box to avoid unnecessary computation
+        incoming = 0
+        threatCount = 0
+        for incomingPlayer in self.playerManager.activePlayers:
+            id = incomingPlayer.getID()
+            if id != self.player_id:
+                incoming = self.contains_players(incomingPlayer.getPosition())
+                if incoming:
+                    print('Incoming Player: ', incomingPlayer.getID())
+                    threatCount += 1
+                    incoming = 0
+        return threatCount
+
+    def check_for_players_in_cell(self):
+
         incoming = 0
         threatCount = 0
         for incomingPlayer in self.playerManager.activePlayers:

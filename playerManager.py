@@ -24,7 +24,7 @@ class playerManager:
             self.active = self.activePlayers[0]
         return newPlayer
 
-    def creatSmartPlayer(self, position = vector):
+    def createSmartPlayer(self, position = vector):
         newPlayer = smartPlayer(position, self.playerCount)
         self.activePlayers.append(newPlayer)
         self.playerCount += 1
