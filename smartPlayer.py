@@ -10,8 +10,9 @@ class smartPlayer (player):
         player.__init__(self, position, id)
         self.type = 'smartPlayer'
         self.target = vector(0,0)
-        self.scope = (5,5,5)
+        self.scope = (10,10,10)
         self.sense = sense(id, position, self.scope)
+        self.imag1 = None
         self.training_sets = [
             [[0, 1], [.125]],                   #Click above
             [[1, 0], [.375]],                    #Click right
@@ -78,11 +79,7 @@ class smartPlayer (player):
         self.brain.inspect()
 
     def look(self):
-        self.sense.look(self.position )
-
-    def set_net_visibility(self, visibility):
-            self.sense.net_visible_f = visibility
-
+        self.imag1 = self.sense.look(self.position)
 
     class brainEngine (threading.Thread):
         def __init__(self, threadID, envObj, manager, sleep):

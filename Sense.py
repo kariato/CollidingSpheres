@@ -18,10 +18,8 @@ class sense:
         self.net_visual_display = list()
         self.net_visible_f = True
         self.net = self.formNet(scope)
-
-
-
-        #self.NET_KEY = CollisionMonitor.addSet(self.net)
+        self.blank_image = None
+        self.image = None
 
     def formNet(self, scope):
         net = list()
@@ -36,9 +34,10 @@ class sense:
         quadrant_octant_factor = 4 # Set to 4 for Quadrant, 8 for octant
         # mesh_size will be the number of elements the "detected" numpy array fed to brain
         self.mesh_size = quadrant_octant_factor*self.mesh_dim_x * self.mesh_dim_y * self.mesh_dim_z
+        self.blank_image = [[0 for x in range(2*self.mesh_dim_x)] for x in range(2*self.mesh_dim_z)]
         previous_id =  self.scope_boundary.id
 
-        #Populate mesh with bounding boxes
+        # Populate mesh with bounding boxes
         for z in range(-self.mesh_dim_z + 1 , self.mesh_dim_z + 1, mesh_unit_size):
             for x in range(-self.mesh_dim_x + 1, self.mesh_dim_x + 1, mesh_unit_size):
                 mesh_x  = self.mesh_center.x - (x - 1/2)*mesh_unit_size
@@ -50,13 +49,12 @@ class sense:
                 cell.player_id = self.player_id
                 net.append(cell)
                 if self.net_visible_f:
-                    self.net_visual_display.append(sphere(pos = mesh_position, radius = u/2, color = color.red))
+                    self.net_visual_display.append(box(pos = mesh_position, length=2*u-.1,
+                                                       width=2*u-.1, height=2*u-.1, color = color.blue))
                 previous_id += 1
-
 
         print('mesh_size', self.mesh_size)
         return net
-
 
     def move_net(self, new_position_center):
         displacement = new_position_center - self.mesh_center
@@ -73,11 +71,13 @@ class sense:
     def look(self, current_position):
             threat_count = self.scope_boundary.check_for_players_in_scope(current_position)
             if threat_count == 0:
-                print('No threats detected')
+                #print('No threats detected')
+                #print self.blank_image
+                return self.blank_image
 
             ## if threats detected we will need to check all bounding boxes
             elif threat_count > 0:
-                print('Threats Detected')
+                #print('Threats Detected')
                 self.move_net(current_position)
                 image = self.record_image()
                 detected = 0
@@ -94,7 +94,6 @@ class sense:
             status = cell.check_for_players_in_cell()
             #print('cell_ID: ', cell.id, 'status: ', status)
             image_list.append(status)
-
         list_index = 0
         for z in range(0,array_dim_x):
             for x in range(0, array_dim_z):
@@ -104,7 +103,4 @@ class sense:
 
         for row in range(array_dim_x - 1, 0, -1):
             print(image_array[row])
-
-
-
-        
+        return image_array

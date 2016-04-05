@@ -61,7 +61,7 @@ class aabb:
             if id != self.player_id:
                 incoming = self.contains_players(incomingPlayer.getPosition())
                 if incoming:
-                    print('Incoming Player: ', incomingPlayer.getID())
+                    # print('Incoming Player: ', incomingPlayer.getID())
                     threatCount += 1
                     incoming = 0
         return threatCount
@@ -75,7 +75,7 @@ class aabb:
             if id != self.player_id:
                 incoming = self.contains_players(incomingPlayer.getPosition())
                 if incoming:
-                    print('Incoming Player: ', incomingPlayer.getID())
+                    #print('Incoming Player: ', incomingPlayer.getID())
                     threatCount += 1
                     incoming = 0
         return threatCount
