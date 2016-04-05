@@ -23,9 +23,9 @@ class sense:
         V_MIN = 1
         mesh_unit_size = V_MIN * self.dt
         # mesh_dim refers to the dimensions of a single quadrant or octant
-        mesh_dim_x = floor(self.scope[0]/mesh_unit_size)
-        mesh_dim_y = floor(self.scope[1]/mesh_unit_size)
-        mesh_dim_z = floor(self.scope[2]/mesh_unit_size)
+        mesh_dim_x = int(floor(self.scope[0]/mesh_unit_size))
+        mesh_dim_y = int(floor(self.scope[1]/mesh_unit_size))
+        mesh_dim_z = int(floor(self.scope[2]/mesh_unit_size))
         # setting mesh_dim_y to 1 will effectively ignore vertical attacks but will reduce computation
         mesh_dim_y = 1
         quadrant_octant_factor = 4 # Set to 4 for Quadrant, 8 for octant
@@ -34,20 +34,22 @@ class sense:
         mesh_center = self.current_position
 
 
-        mesh_front_left_x  = mesh_center.x - (mesh_dim_x - 1/2)*mesh_unit_size
-        mesh_front_left_y  = mesh_center.y
-        mesh_front_left_z  = mesh_center.z - (mesh_dim_z - 1/2)*mesh_unit_size
-        mesh_front_left_id = self.scope_boundary.id + 1
-        mesh_front_left_position = vector(mesh_front_left_x, mesh_front_left_y , mesh_front_left_z)
-        u = mesh_unit_size
 
-        mesh_front_left = aabb(mesh_front_left_id, (u, u, u), mesh_front_left_position)
-        sphere(pos = mesh_front_left_position, radius = u, color = color.red)
+        previous_id =  self.scope_boundary.id
 
-        # Populate mesh with bounding boxes
-        # for x in range():
-        #     for z in range():
-        net.append(aabb(mesh_front_left_id, (u, u, u), mesh_front_left_position))
+        #Populate mesh with bounding boxes
+        for z in range(-mesh_dim_z + 1 , mesh_dim_z + 1, mesh_unit_size):
+            for x in range(-mesh_dim_x + 1, mesh_dim_x + 1, mesh_unit_size):
+
+                mesh_x  = mesh_center.x - (x - 1/2)*mesh_unit_size
+                mesh_y  = mesh_center.y - 6
+                mesh_z  = mesh_center.z - (z - 1/2)*mesh_unit_size
+                mesh_position = vector(mesh_x, mesh_y , mesh_z)
+                u = mesh_unit_size
+                #mesh_front_left = aabb(mesh_front_left_id, (u, u, u), mesh_front_left_position)
+                net.append(aabb(previous_id + 1, (u, u, u), mesh_position))
+                sphere(pos = mesh_position, radius = u/2, color = color.red)
+                previous_id += 1
 
 
         print('mesh_size', mesh_size)
