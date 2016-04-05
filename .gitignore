@@ -1,0 +1,6 @@
+*.dea
+*.idea
+collision.pyc CourseObjects.pyc eventHandler.pyc fancyBalls.pyc neuralNetwork.pyc particle.pyc perceptron.pyc player.pyc smartPlayer.pyc
+collision.pyc CourseObjects.pyc eventHandler.pyc fancyBalls.pyc neuralNetwork.pyc particle.pyc perceptron.pyc player.pyc smartPlayer.pyc
+*.pyc
+.gitignore
