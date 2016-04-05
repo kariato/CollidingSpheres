@@ -53,7 +53,7 @@ class enviornment:
         # self.Walker1.train()
         # self.Walker0.train()
         # self.Walker2.train()
-        self.SmartyPants.train()
+        #self.SmartyPants.train()
 
 
 
@@ -77,8 +77,7 @@ class enviornment:
 
 
         self.collisionTest1 = CollisionMonitor()
-        self.ACTIVE_PLAYERS = self.collisionTest1.addSet(self.playerMgr.activePlayers)
-
+        self.PLAYERS_COLLISION_KEY = self.collisionTest1.addSet(self.playerMgr.activePlayers)
         self.randomWalk = randomWalk(1,self, self.playerMgr,.5)
 
     def run(self):
@@ -90,7 +89,7 @@ class enviornment:
                 rate(self.rate)
                 self.playerMgr.updatePlayers()
                 self.playerMgr.applyForces(self)
-                self.collisionTest1.check_player_player_collision(self.ACTIVE_PLAYERS)
+                self.collisionTest1.check_player_player_collision(self.PLAYERS_COLLISION_KEY)
                 self.walls()
 
             if self.pauseCount == 0:

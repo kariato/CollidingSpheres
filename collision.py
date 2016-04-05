@@ -5,25 +5,26 @@ import math
 
 class aabb:
 
-    playerManager = 0
+    playerManager = None
     def __init__(self, id, scope, pos_Rel_Center = vector(0,0,0) ):
 
+        self.player_id = 0
         self.type = 'aabb'
         if id >= 0:
             self.id = id
         else:
             return
-        length = scope[0]
-        width  = scope[1]
-        height = scope[2]
+        self.length = scope[0]
+        self.height  = scope[1]
+        self.width = scope[2]
+
+        ## This part gets updated each call to look()
         self.location = vector(pos_Rel_Center)
-        self.Upper = self.location + .5*vector(length, width, height)
-        self.Lower = self.location - .5*vector(length, width, height)
+        self.Upper = self.location + .5*vector(self.length, self.height, self.width)
+        self.Lower = self.location - .5*vector(self.length, self.height, self.width)
 
-    def contains(self, incoming):
-
-
-        print('Checking to see if: ', incoming, ' is between ', self.Upper, ' and ', self.Lower)
+    def contains_players(self, position):
+        print('Checking to see if: ', position, ' is between ', self.Upper, ' and ', self.Lower)
         Upper_x = self.Upper.x
         Upper_y = self.Upper.y
         Upper_z = self.Upper.z
@@ -32,23 +33,38 @@ class aabb:
         Lower_y = self.Lower.y
         Lower_z = self.Lower.z
 
-        x = incoming.x
-        y = incoming.y
-        z = incoming.z
+        x = position.x
+        y = position.y
+        z = position.z
 
-        if Lower_x < x and  x < Upper_x and Lower_y < y and  y < Upper_y and Lower_z < z and  z < Upper_z:
+
+        #ommit checking y coordinates for now
+        if Lower_x < x and  x < Upper_x and  Lower_z < z and  z < Upper_z:
             return 1
         else:
             return 0
 
-    def registerManager(self, mgr):
-        playerManager = mgr
+# Move the scope boundary to the players location
+    def update_scope_boundary(self,  new_position):
 
+        self.Upper = new_position + .5*vector(self.length, self.width, self.height)
+        self.Lower = new_position - .5*vector(self.length, self.width, self.height)
 
+    def check_for_players_in_scope(self, new_position):
 
-
-
-        ## Define Boudnary Planes from box
+        self.update_scope_boundary(new_position)
+        # Do a preliminary check with a scope sized bounding box to avoid unnecessary computation
+        incoming = 0
+        threatCount = 0
+        for incomingPlayer in self.playerManager.activePlayers:
+            id = incomingPlayer.getID()
+            if id != self.player_id:
+                incoming = self.contains_players(incomingPlayer.getPosition())
+                if incoming:
+                    print('Incoming Player: ', incomingPlayer.getID())
+                    threatCount += 1
+                    incoming = 0
+        return threatCount
 
 
 # Bounding Sphere Class
@@ -57,8 +73,11 @@ class bs:
         pass
 
 class CollisionMonitor:
+
+    interactingSets = dict()
+
+
     def __init__ (self):
-        self.interactingSets = dict()
         self.time = 0
 
         # should sort through objectList, caclute, then assign bounding sphere, bound box etc
@@ -78,33 +97,18 @@ class CollisionMonitor:
                 distance = objX.getPosition() - objY.getPosition()
                 min_distance = objX.body.radius + objY.body.radius
                 if distance.mag <= min_distance:
-                    self.handleCollision(objX, objY)
+                    self.on_player_player_collision(objX, objY)
 
-    def handleCollision(self,objX, objY):
-        
-        scale            = 5
-        vPlaneOffset     = vector(0,3,0)
-        rNorselfvec        = vector()
-        r1Norselfvec       = vector()
-        r2Norselfvec       = vector()
-        vRel_vec         = vector()
-        u1_vec           = vector()
-        u2_vec           = vector()
-        v1_vec           = vector()
-        v2_vec           = vector()
-
+    def on_player_player_collision(self,objX, objY):
         m1               = objX.mass
         m2               = objY.mass
         r1Norm           = objX.position
         r2Norm           = objY.position
         u1_vec           = objX.velocity
         u2_vec           = objY.velocity
-
         u                = m1*m2/(m1+m2)
-
         rNorselfvec        = r1Norm - r2Norm
         vRel_vec         = u1_vec - u2_vec
-
         v1_vec           = u1_vec - 2*(u/m1)*vRel_vec.proj(rNorselfvec)
         v2_vec           = u2_vec + 2*(u/m2)*vRel_vec.proj(rNorselfvec)
 

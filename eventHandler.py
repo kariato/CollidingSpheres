@@ -57,6 +57,7 @@ class eventHandler:
             self.tKeyDown()
 
         if evt.key == 'l':
+            print('Player is at: ', self.activePlayer.position)
             self.playerManager.look(self.activePlayer)
 
     def leftKeyDown(self):

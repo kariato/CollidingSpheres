@@ -14,7 +14,7 @@ class playerManager:
         self.activePlayerID = 0
         self.nonZero_FNet_ID = list()
         self.listOfWalkers = list()
-#        aabb.playerManager = self ## Register with other classes
+        aabb.playerManager = self ## Register with aabb collision class
 
     def createPlayer(self, position = vector):
         newPlayer = player(position, self.playerCount)
@@ -201,14 +201,12 @@ class playerManager:
                 player.setTarget(targetPosition)
                 player.chase()
 
-    def look(self, player, dt = 1):
+    def look(self, smart_player):
 
-        if player.getType() == 'smartPlayer':
-            pass
-
-
-
+        if smart_player.getType() == 'smartPlayer':
+            smart_player.look()
 
         else:
             print('Not Smart')
             return -1
+

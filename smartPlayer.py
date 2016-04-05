@@ -1,15 +1,17 @@
 from player import *
 from fullANN import *
+from Sense import *
 import threading
 import time
+
 
 class smartPlayer (player):
     def __init__(self, position, id):
         player.__init__(self, position, id)
         self.type = 'smartPlayer'
         self.target = vector(0,0)
-        self.scope = (5,5,5)
-
+        self.scope = (10,10,10)
+        self.sense = sense(id, position, self.scope)
         self.training_sets = [
             [[0, 1], [.125]],                   #Click above
             [[1, 0], [.375]],                    #Click right
@@ -22,7 +24,7 @@ class smartPlayer (player):
 
     def train(self):
         i = 0
-        for i in range(30000):
+        for i in range(0, 30000):
             training_inputs, training_outputs = random.choice(self.training_sets)
             self.brain.train(training_inputs, training_outputs)
 
@@ -75,6 +77,10 @@ class smartPlayer (player):
     def printStats(self):
         self.brain.inspect()
 
+    def look(self):
+        self.sense.look(self.position, )
+
+
     class brainEngine (threading.Thread):
         def __init__(self, threadID, envObj, manager, sleep):
             threading.Thread.__init__(self)
@@ -87,3 +93,5 @@ class smartPlayer (player):
         def run(self):
             while true:
                 time.sleep(self.SLEEP)
+
+
